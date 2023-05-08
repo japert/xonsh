@@ -17,7 +17,7 @@ TREE0 = Wizard(children=[Pass(), Message(message="yo")])
 TREE1 = Question("wakka?", {"jawaka": Pass()})
 
 
-def test_pretty_format_tree0():
+def test_pretty_format_tree0() -> None:
     exp = "Wizard(children=[\n" " Pass(),\n" " Message('yo')\n" "])"
     obs = PrettyFormatter(TREE0).visit()
     assert exp == obs
@@ -25,7 +25,7 @@ def test_pretty_format_tree0():
     assert exp.replace("\n", "") == repr(TREE0)
 
 
-def test_pretty_format_tree1():
+def test_pretty_format_tree1() -> None:
     exp = (
         "Question(\n"
         " question='wakka?',\n"
@@ -40,7 +40,7 @@ def test_pretty_format_tree1():
     assert exp.replace("\n", "") == repr(TREE1)
 
 
-def test_state_visitor_store():
+def test_state_visitor_store() -> None:
     exp = {"rick": [{}, {}, {"and": "morty"}]}
     sv = StateVisitor()
     sv.store("/rick/2/and", "morty")
@@ -69,7 +69,7 @@ def dump_xonfig_env_mock(path, value):
     return f"${name} = {value!r}"
 
 
-def test_tuple_store_and_write():
+def test_tuple_store_and_write() -> None:
     # setup
     sv = StateVisitor()
     sv.store("/env/XONSH_HISTORY_SIZE", (1073741824, "b"))

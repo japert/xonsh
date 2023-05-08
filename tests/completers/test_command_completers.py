@@ -17,7 +17,7 @@ def xs_orig_commands_cache(xession):
     pass
 
 
-def test_complete_command(completion_context_parse):
+def test_complete_command(completion_context_parse) -> None:
     if ON_WINDOWS:
         command = "dir.exe"
     else:
@@ -30,14 +30,14 @@ def test_complete_command(completion_context_parse):
 
 
 @skip_if_on_windows
-def test_skipper_command(completion_context_parse):
+def test_skipper_command(completion_context_parse) -> None:
     assert "grep" in completions_from_result(
         complete_skipper(completion_context_parse("sudo gre", 8))
     )
 
 
 @skip_if_on_windows
-def test_skipper_arg(completion_context_parse, xession, monkeypatch):
+def test_skipper_arg(completion_context_parse, xession, monkeypatch) -> None:
     monkeypatch.setattr(xession.shell.shell, "completer", Completer(), raising=False)
     bash_completer_mock = Mock()
     monkeypatch.setattr(xession, "completers", {"bash": bash_completer_mock})

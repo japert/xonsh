@@ -28,7 +28,7 @@ def live_fields(xession):
         ("{f} jawaka", "wakka jawaka"),
     ],
 )
-def test_format_prompt(inp, exp, fields, formatter, xession):
+def test_format_prompt(inp, exp, fields, formatter, xession) -> None:
     obs = formatter(template=inp, fields=fields)
     assert exp == obs
 
@@ -60,12 +60,12 @@ def test_format_prompt(inp, exp, fields, formatter, xession):
         ("{{{none:{{{}}}}}}", "{}"),
     ],
 )
-def test_format_prompt_with_format_spec(inp, exp, fields, formatter):
+def test_format_prompt_with_format_spec(inp, exp, fields, formatter) -> None:
     obs = formatter(template=inp, fields=fields)
     assert exp == obs
 
 
-def test_format_prompt_with_broken_template(formatter):
+def test_format_prompt_with_broken_template(formatter) -> None:
     for p in ("{user", "{user}{hostname"):
         assert formatter(p) == p
 
@@ -75,12 +75,12 @@ def test_format_prompt_with_broken_template(formatter):
 
 
 @pytest.mark.parametrize("inp", ["{user", "{{user", "{{user}", "{user}{hostname"])
-def test_format_prompt_with_broken_template_in_func(inp, formatter):
+def test_format_prompt_with_broken_template_in_func(inp, formatter) -> None:
     # '{{user' will be parsed to '{user'
     assert "{user" in formatter(lambda: inp)
 
 
-def test_format_prompt_with_invalid_func(formatter, xession):
+def test_format_prompt_with_invalid_func(formatter, xession) -> None:
     def p():
         foo = bar  # raises exception # noqa
         return "{user}"
@@ -88,7 +88,7 @@ def test_format_prompt_with_invalid_func(formatter, xession):
     assert isinstance(formatter(p), str)
 
 
-def test_format_prompt_with_func_that_raises(formatter, capsys, xession):
+def test_format_prompt_with_func_that_raises(formatter, capsys, xession) -> None:
     template = "tt {zerodiv} tt"
     exp = "tt {BACKGROUND_RED}{ERROR:zerodiv}{RESET} tt"
     fields = {"zerodiv": lambda: 1 / 0}
@@ -98,7 +98,7 @@ def test_format_prompt_with_func_that_raises(formatter, capsys, xession):
     assert "prompt: error" in err
 
 
-def test_format_prompt_with_no_env(formatter, xession, live_fields, env):
+def test_format_prompt_with_no_env(formatter, xession, live_fields, env) -> None:
     xession.shell.prompt_formatter = formatter
 
     env.pop("VIRTUAL_ENV", None)  # For virtualenv
@@ -108,7 +108,9 @@ def test_format_prompt_with_no_env(formatter, xession, live_fields, env):
 
 
 @pytest.mark.parametrize("envname", ["env", "foo", "bar"])
-def test_format_prompt_with_various_envs(formatter, xession, live_fields, envname):
+def test_format_prompt_with_various_envs(
+    formatter, xession, live_fields, envname
+) -> None:
     xession.shell.prompt_formatter = formatter
 
     xession.env["VIRTUAL_ENV"] = envname
@@ -119,7 +121,9 @@ def test_format_prompt_with_various_envs(formatter, xession, live_fields, envnam
 
 @pytest.mark.parametrize("pre", ["(", "[[", "", "   "])
 @pytest.mark.parametrize("post", [")", "]]", "", "   "])
-def test_format_prompt_with_various_prepost(formatter, xession, live_fields, pre, post):
+def test_format_prompt_with_various_prepost(
+    formatter, xession, live_fields, pre, post
+) -> None:
     xession.shell.prompt_formatter = formatter
 
     xession.env["VIRTUAL_ENV"] = "env"
@@ -130,7 +134,7 @@ def test_format_prompt_with_various_prepost(formatter, xession, live_fields, pre
     assert formatter("{env_name}", fields=lf_copy) == exp
 
 
-def test_noenv_with_disable_set(formatter, xession, live_fields):
+def test_noenv_with_disable_set(formatter, xession, live_fields) -> None:
     xession.shell.prompt_formatter = formatter
     xession.env.update(dict(VIRTUAL_ENV="env", VIRTUAL_ENV_DISABLE_PROMPT=1))
 
@@ -150,7 +154,7 @@ class TestPromptFromVenvCfg:
     CONFIGS.extend([f"other = fluff\n{t}\nmore = fluff" for t in CONFIGS])
 
     @pytest.mark.parametrize("text", CONFIGS)
-    def test_determine_env_name_from_cfg(self, monkeypatch, tmp_path, text):
+    def test_determine_env_name_from_cfg(self, monkeypatch, tmp_path, text) -> None:
         monkeypatch.setattr(prompt_env, "_surround_env_name", lambda x: x)
         (tmp_path / "pyvenv.cfg").write_text(text)
         wanted = self.WANTED if self.WANTED in text else tmp_path.name
@@ -158,10 +162,12 @@ class TestPromptFromVenvCfg:
 
 
 class TestEnvNamePrompt:
-    def test_no_prompt(self, formatter, live_fields):
+    def test_no_prompt(self, formatter, live_fields) -> None:
         assert formatter("{env_name}", fields=live_fields) == ""
 
-    def test_search_order(self, monkeypatch, tmp_path, formatter, xession, live_fields):
+    def test_search_order(
+        self, monkeypatch, tmp_path, formatter, xession, live_fields
+    ) -> None:
         xession.shell.prompt_formatter = formatter
 
         first = "first"
@@ -225,7 +231,7 @@ class TestEnvNamePrompt:
         assert fmt() == ""
 
     @pytest.mark.xfail(reason="caching introduces stale values")
-    def test_env_name_updates_on_filesystem_change(self, tmp_path):
+    def test_env_name_updates_on_filesystem_change(self, tmp_path) -> None:
         """Due to cache, user might get stale value.
 
         if user fiddles with env folder or the config, they might get a stale
@@ -239,7 +245,7 @@ class TestEnvNamePrompt:
 
 
 @pytest.mark.parametrize("disable", [0, 1])
-def test_custom_env_overrides_default(formatter, xession, live_fields, disable):
+def test_custom_env_overrides_default(formatter, xession, live_fields, disable) -> None:
     xession.shell.prompt_formatter = formatter
 
     prompt = "!venv active! "
@@ -256,7 +262,7 @@ def test_custom_env_overrides_default(formatter, xession, live_fields, disable):
     assert formatter("{env_name}", fields=live_fields) == exp
 
 
-def test_promptformatter_cache(formatter):
+def test_promptformatter_cache(formatter) -> None:
     spam = Mock()
     template = "{spam} and {spam}"
     fields = {"spam": spam}
@@ -266,7 +272,7 @@ def test_promptformatter_cache(formatter):
     assert spam.call_count == 1
 
 
-def test_promptformatter_clears_cache(formatter):
+def test_promptformatter_clears_cache(formatter) -> None:
     spam = Mock()
     template = "{spam} and {spam}"
     fields = {"spam": spam}

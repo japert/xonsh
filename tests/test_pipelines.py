@@ -68,7 +68,7 @@ def patched_events(monkeypatch, xonsh_events, xonsh_session):
         ("!(echo hi | grep x)", "", ""),
     ),
 )
-def test_command_pipeline_capture(cmdline, stdout, stderr, xonsh_execer):
+def test_command_pipeline_capture(cmdline, stdout, stderr, xonsh_execer) -> None:
     pipeline: CommandPipeline = xonsh_execer.eval(cmdline)
     assert pipeline.out == stdout
     assert pipeline.err == (stderr or None)
@@ -85,11 +85,11 @@ def test_command_pipeline_capture(cmdline, stdout, stderr, xonsh_execer):
         pytest.param("echo -n hi", "hi", marks=skip_if_on_windows),
     ),
 )
-def test_simple_capture(cmdline, output, xonsh_execer):
+def test_simple_capture(cmdline, output, xonsh_execer) -> None:
     assert xonsh_execer.eval(f"$({cmdline})") == output
 
 
-def test_raw_substitution(xonsh_execer):
+def test_raw_substitution(xonsh_execer) -> None:
     assert xonsh_execer.eval("$(echo @(b'bytes!'))") == "bytes!\n"
 
 
@@ -110,12 +110,12 @@ def test_raw_substitution(xonsh_execer):
         ("!(nocommand) == ''", True),
     ),
 )
-def test_casting(cmdline, result, xonsh_execer):
+def test_casting(cmdline, result, xonsh_execer) -> None:
     assert xonsh_execer.eval(f"{cmdline}") == result
 
 
 @skip_if_on_windows
-def test_background_pgid(xonsh_session, monkeypatch):
+def test_background_pgid(xonsh_session, monkeypatch) -> None:
     monkeypatch.setitem(xonsh_session.env, "XONSH_INTERACTIVE", True)
     pipeline = xonsh_session.execer.eval("![echo hi &]")
     assert pipeline.term_pgid is not None

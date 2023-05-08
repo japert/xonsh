@@ -17,7 +17,7 @@ def setup(xession, xonsh_execer, monkeypatch, mock_executables_in):
     mock_executables_in(["cool"])
 
 
-def test_empty_line(check_completer):
+def test_empty_line(check_completer) -> None:
     completions = check_completer("")
 
     assert completions
@@ -26,7 +26,7 @@ def test_empty_line(check_completer):
         assert exp in completions
 
 
-def test_empty_subexpr():
+def test_empty_subexpr() -> None:
     completions = complete_base(
         CompletionContext(
             command=CommandContext((), 0, subcmd_opening="$("), python=None

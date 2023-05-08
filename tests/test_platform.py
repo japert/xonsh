@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 import xonsh.platform as xp
 
 
-def test_githash_value_error(monkeypatch):
+def test_githash_value_error(monkeypatch) -> None:
     @contextmanager
     def mocked_open(*args):
         yield MagicMock(read=lambda: "abc123")
@@ -16,5 +16,5 @@ def test_githash_value_error(monkeypatch):
     assert sha is None
 
 
-def test_pathsplit_empty_path():
+def test_pathsplit_empty_path() -> None:
     assert xp.pathsplit("") == ("", "")

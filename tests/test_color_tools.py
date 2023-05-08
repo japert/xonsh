@@ -37,7 +37,7 @@ from xonsh.color_tools import iscolor
         ("BACKGROUND_BOLD_RED", False),
     ],
 )
-def test_iscolor(inp, exp):
+def test_iscolor(inp, exp) -> None:
     obs = iscolor(inp)
     if exp:
         assert obs

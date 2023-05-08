@@ -19,7 +19,7 @@ from xonsh.tools import EnvPath
         {"z": EnvPath(["wakka", "jawaka"])},
     ],
 )
-def test_serialize_xonsh_json_roundtrip(inp):
+def test_serialize_xonsh_json_roundtrip(inp) -> None:
     s = json.dumps(inp, default=serialize_xonsh_json)
     obs = json.loads(s)
     assert inp == obs

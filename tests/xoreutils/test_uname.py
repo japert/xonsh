@@ -9,7 +9,7 @@ def uname(xession, load_xontrib):
     return xession.aliases["uname"]
 
 
-def test_uname_without_args(uname):
+def test_uname_without_args(uname) -> None:
     out = uname(["-a"])
 
     assert out.startswith(platform.uname().system)

@@ -14,32 +14,32 @@ def imp_env(xession):
     yield
 
 
-def test_import():
+def test_import() -> None:
     import sample
 
     assert "hello mom jawaka\n" == sample.x
 
 
-def test_import_empty():
+def test_import_empty() -> None:
     from xpack import empty_xsh
 
     assert empty_xsh
 
 
-def test_absolute_import():
+def test_absolute_import() -> None:
     from xpack import sample
 
     assert "hello mom jawaka\n" == sample.x
 
 
-def test_relative_import():
+def test_relative_import() -> None:
     from xpack import relimp
 
     assert "hello mom jawaka\n" == relimp.sample.x
     assert "hello mom jawaka\ndark chest of wonders" == relimp.y
 
 
-def test_sub_import():
+def test_sub_import() -> None:
     from xpack.sub import sample
 
     assert "hello mom jawaka\n" == sample.x
@@ -48,21 +48,21 @@ def test_sub_import():
 TEST_DIR = os.path.dirname(__file__)
 
 
-def test_module_dunder_file_attribute():
+def test_module_dunder_file_attribute() -> None:
     import sample
 
     exp = os.path.join(TEST_DIR, "sample.xsh")
     assert os.path.abspath(sample.__file__) == exp
 
 
-def test_module_dunder_file_attribute_sub():
+def test_module_dunder_file_attribute_sub() -> None:
     from xpack.sub import sample
 
     exp = os.path.join(TEST_DIR, "xpack", "sub", "sample.xsh")
     assert os.path.abspath(sample.__file__) == exp
 
 
-def test_get_source():
+def test_get_source() -> None:
     mod = import_module("sample")
     loader = mod.__loader__
     source = loader.get_source("sample")

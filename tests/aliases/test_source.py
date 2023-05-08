@@ -28,13 +28,15 @@ def mocked_execx_checker(xession, monkeypatch):
     return checker
 
 
-def test_source_current_dir(mockopen, monkeypatch, mocked_execx_checker):
+def test_source_current_dir(mockopen, monkeypatch, mocked_execx_checker) -> None:
     monkeypatch.setattr(os.path, "isfile", lambda x: True)
     source_alias(["foo", "bar"])
     assert mocked_execx_checker == ["foo", "bar"]
 
 
-def test_source_path(mockopen, mocked_execx_checker, patch_locate_binary, xession):
+def test_source_path(
+    mockopen, mocked_execx_checker, patch_locate_binary, xession
+) -> None:
     patch_locate_binary(xession.commands_cache)
 
     source_alias(["foo", "bar"])
@@ -51,7 +53,7 @@ def test_source_path(mockopen, mocked_execx_checker, patch_locate_binary, xessio
         "source-zsh",
     ],
 )
-def test_source_foreign_fn_parser(alias, xession):
+def test_source_foreign_fn_parser(alias, xession) -> None:
     aliases = make_default_aliases()
     source_bash = aliases[alias]
 

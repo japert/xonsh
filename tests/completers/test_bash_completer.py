@@ -54,7 +54,7 @@ def setup(monkeypatch, tmp_path, xession):
         ),
     ),
 )
-def test_bash_completer(command_context, completions, lprefix):
+def test_bash_completer(command_context, completions, lprefix) -> None:
     bash_completions, bash_lprefix = complete_from_bash(
         CompletionContext(command_context)
     )
@@ -160,7 +160,7 @@ def test_bash_completer(command_context, completions, lprefix):
         ),
     ),
 )
-def test_quote_handling(command_context, completions, lprefix):
+def test_quote_handling(command_context, completions, lprefix) -> None:
     bash_completions, bash_lprefix = complete_from_bash(
         CompletionContext(command_context)
     )
@@ -173,7 +173,7 @@ def test_quote_handling(command_context, completions, lprefix):
 
 @skip_if_on_darwin
 @skip_if_on_windows
-def test_bash_completer_empty_prefix():
+def test_bash_completer_empty_prefix() -> None:
     context = CompletionContext(
         CommandContext(args=(CommandArg("git"),), arg_index=1, prefix="")
     )
@@ -223,7 +223,9 @@ def test_bash_completer_empty_prefix():
         ),
     ),
 )
-def test_equal_sign_arg(command_context, completions, lprefix, exp_append_space):
+def test_equal_sign_arg(
+    command_context, completions, lprefix, exp_append_space
+) -> None:
     bash_completions, bash_lprefix = complete_from_bash(
         CompletionContext(command_context)
     )
@@ -249,7 +251,7 @@ dev-branch
 
 
 # git push origin :dev-b<TAB>  ->  git push origin :dev-branch
-def test_git_delete_remote_branch(bash_completer):
+def test_git_delete_remote_branch(bash_completer) -> None:
     command_context = CommandContext(
         args=(
             CommandArg("git"),

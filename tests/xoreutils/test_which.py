@@ -28,20 +28,20 @@ class TestWhich:
         for d in self.testdirs:
             d.cleanup()
 
-    def test_whichgen(self):
+    def test_whichgen(self) -> None:
         testdir = self.testdirs[0].name
         arg = "whichtestapp1"
         matches = list(_which.whichgen(arg, path=[testdir], exts=self.exts))
         assert len(matches) == 1
         assert self._file_match(matches[0][0], os.path.join(testdir, arg))
 
-    def test_whichgen_failure(self):
+    def test_whichgen_failure(self) -> None:
         testdir = self.testdirs[0].name
         arg = "not_a_file"
         matches = list(_which.whichgen(arg, path=[testdir], exts=self.exts))
         assert len(matches) == 0
 
-    def test_whichgen_verbose(self):
+    def test_whichgen_verbose(self) -> None:
         testdir = self.testdirs[0].name
         arg = "whichtestapp1"
         matches = list(
@@ -52,7 +52,7 @@ class TestWhich:
         assert self._file_match(match, os.path.join(testdir, arg))
         assert from_where == "from given path element 0"
 
-    def test_whichgen_multiple(self):
+    def test_whichgen_multiple(self) -> None:
         testdir0 = self.testdirs[0].name
         testdir1 = self.testdirs[1].name
         arg = "whichtestapp1"
@@ -63,13 +63,13 @@ class TestWhich:
 
     if ON_WINDOWS:
 
-        def test_whichgen_ext_failure(self):
+        def test_whichgen_ext_failure(self) -> None:
             testdir = self.testdirs[0].name
             arg = "whichtestapp2"
             matches = list(_which.whichgen(arg, path=[testdir], exts=self.exts))
             assert len(matches) == 0
 
-        def test_whichgen_ext_success(self):
+        def test_whichgen_ext_success(self) -> None:
             testdir = self.testdirs[0].name
             arg = "whichtestapp2"
             matches = list(_which.whichgen(arg, path=[testdir], exts=[".wta"]))

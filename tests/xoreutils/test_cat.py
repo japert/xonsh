@@ -33,18 +33,18 @@ class CatLimitedBuffer(io.BytesIO):
 
 
 class TestCatLimitedBuffer:
-    def test_write_buffer_correctly(self):
+    def test_write_buffer_correctly(self) -> None:
         buf = CatLimitedBuffer(limit=500)
         buf.write(b"0" * 499)
         assert buf.getvalue() == b"0" * 499
 
-    def test_raise_keyboardinterrupt_when_reached(self):
+    def test_raise_keyboardinterrupt_when_reached(self) -> None:
         buf = CatLimitedBuffer(limit=500)
         buf.write(b"0" * 499)
         with pytest.raises(KeyboardInterrupt):
             buf.write(b"1")
 
-    def test_raise_allow_write_over_limit(self):
+    def test_raise_allow_write_over_limit(self) -> None:
         buf = CatLimitedBuffer(limit=500)
         buf.write(b"0" * 400)
         with pytest.raises(KeyboardInterrupt):
@@ -52,7 +52,7 @@ class TestCatLimitedBuffer:
 
         assert buf.getvalue() == (b"0" * 400 + b"1" * 200)
 
-    def test_not_raise_twice_time(self):
+    def test_not_raise_twice_time(self) -> None:
         buf = CatLimitedBuffer(limit=500)
         with pytest.raises(KeyboardInterrupt):
             buf.write(b"1" * 1000)
@@ -83,7 +83,7 @@ class TestCat:
             "",
         ],
     )
-    def test_cat_single_file_work_exist_content(self, cat_env_fixture, content):
+    def test_cat_single_file_work_exist_content(self, cat_env_fixture, content) -> None:
         with open(self.tempfile, "w") as f:
             f.write(content)
         expected_content = content.replace("\n", os.linesep)
@@ -103,7 +103,7 @@ class TestCat:
     @pytest.mark.skipif(
         not os.path.exists("/dev/urandom"), reason="/dev/urandom doesn't exists"
     )
-    def test_cat_dev_urandom(self, cat_env_fixture):
+    def test_cat_dev_urandom(self, cat_env_fixture) -> None:
         """
         test of cat (pseudo) device.
         """

@@ -1,7 +1,7 @@
 from xonsh.prompt.cwd import _replace_home_cwd
 
 
-def test_cwd_escapes_curly_brackets_with_more_curly_brackets(xession, tmpdir):
+def test_cwd_escapes_curly_brackets_with_more_curly_brackets(xession, tmpdir) -> None:
     xession.env["HOME"] = str(tmpdir)
     xession.env["PWD"] = "{foo}"
     assert _replace_home_cwd() == "{{foo}}"

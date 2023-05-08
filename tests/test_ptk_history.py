@@ -16,7 +16,7 @@ def history_obj():
     return hist
 
 
-def test_obj(history_obj):
+def test_obj(history_obj) -> None:
     assert ["line10"] == history_obj.get_strings()
     assert len(history_obj) == 1
     assert ["line10"] == [x for x in history_obj]

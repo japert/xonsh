@@ -136,11 +136,13 @@ def RICH_COMPLETION_DEFAULTS():
 
 
 Completion = tp.Union[RichCompletion, str]
-CompleterResult = tp.Union[tp.Set[Completion], tp.Tuple[tp.Set[Completion], int], None]
+CompleterResult = tp.Union[
+    tp.Set[Completion], tp.Tuple[tp.Set[Completion], int], None, tp.Iterator[Completion]
+]
 ContextualCompleter = tp.Callable[[CompletionContext], CompleterResult]
 
 
-def contextual_completer(func: ContextualCompleter):
+def contextual_completer(func: ContextualCompleter) -> ContextualCompleter:
     """Decorator for a contextual completer
 
     This is used to mark completers that want to use the parsed completion context.

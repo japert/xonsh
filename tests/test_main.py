@@ -32,34 +32,34 @@ def empty_xonshrc(monkeypatch):
     monkeypatch.setitem(os.environ, "XONSHRC", empty_file_path)
 
 
-def test_premain_no_arg(shell, monkeypatch, xession):
+def test_premain_no_arg(shell, monkeypatch, xession) -> None:
     monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
     xonsh.main.premain([])
     assert xession.env.get("XONSH_LOGIN")
 
 
-def test_premain_interactive(shell, xession):
+def test_premain_interactive(shell, xession) -> None:
     xonsh.main.premain(["-i"])
     assert xession.env.get("XONSH_INTERACTIVE")
 
 
-def test_premain_login_command(shell, xession):
+def test_premain_login_command(shell, xession) -> None:
     xonsh.main.premain(["-l", "-c", 'echo "hi"'])
     assert xession.env.get("XONSH_LOGIN")
 
 
-def test_premain_login(shell, xession):
+def test_premain_login(shell, xession) -> None:
     xonsh.main.premain(["-l"])
     assert xession.env.get("XONSH_LOGIN")
 
 
-def test_premain_D(shell, xession):
+def test_premain_D(shell, xession) -> None:
     xonsh.main.premain(["-DTEST1=1616", "-DTEST2=LOL"])
     assert xession.env.get("TEST1") == "1616"
     assert xession.env.get("TEST2") == "LOL"
 
 
-def test_premain_custom_rc(shell, tmpdir, monkeypatch, xession):
+def test_premain_custom_rc(shell, tmpdir, monkeypatch, xession) -> None:
     monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
     monkeypatch.setitem(os.environ, "XONSH_CACHE_SCRIPTS", "False")
     f = tmpdir.join("wakkawakka")
@@ -73,7 +73,7 @@ def test_premain_custom_rc(shell, tmpdir, monkeypatch, xession):
     ON_WINDOWS and sys.version_info[:3] == "3.8",
     reason="weird failure on py38+windows",
 )
-def test_rc_with_modules(shell, tmpdir, monkeypatch, capsys, xession):
+def test_rc_with_modules(shell, tmpdir, monkeypatch, capsys, xession) -> None:
     """Test that an RC file can load modules inside the same folder it is located in."""
 
     monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
@@ -95,7 +95,7 @@ def test_rc_with_modules(shell, tmpdir, monkeypatch, capsys, xession):
     assert tmpdir.strpath not in sys.path
 
 
-def test_python_rc(shell, tmpdir, monkeypatch, capsys, xession, mocker):
+def test_python_rc(shell, tmpdir, monkeypatch, capsys, xession, mocker) -> None:
     """Test that python based control files are executed using Python's parser"""
 
     monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
@@ -119,7 +119,7 @@ def test_python_rc(shell, tmpdir, monkeypatch, capsys, xession, mocker):
     assert not spy.called
 
 
-def test_rcdir(shell, tmpdir, monkeypatch, capsys):
+def test_rcdir(shell, tmpdir, monkeypatch, capsys) -> None:
     """
     Test that files are loaded from an rcdir, after a normal rc file,
     and in lexographic order.
@@ -144,7 +144,7 @@ def test_rcdir(shell, tmpdir, monkeypatch, capsys):
     assert len(stderr) == 0
 
 
-def test_rcdir_cli(shell, tmpdir, xession, monkeypatch):
+def test_rcdir_cli(shell, tmpdir, xession, monkeypatch) -> None:
     """Test that --rc DIR works"""
     rcdir = tmpdir.join("rcdir")
     rcdir.mkdir()
@@ -157,7 +157,7 @@ def test_rcdir_cli(shell, tmpdir, xession, monkeypatch):
     assert rc.strpath in xession.rc_files
 
 
-def test_rcdir_empty(shell, tmpdir, monkeypatch, capsys):
+def test_rcdir_empty(shell, tmpdir, monkeypatch, capsys) -> None:
     """Test that an empty XONSHRC_DIR is not an error"""
 
     rcdir = tmpdir.join("rc.d")
@@ -225,7 +225,7 @@ def test_rcdir_empty(shell, tmpdir, monkeypatch, capsys):
     ],
     ids=lambda ae: " ".join(ae),
 )
-def test_script_startup(shell, tmpdir, monkeypatch, capsys, args, expected):
+def test_script_startup(shell, tmpdir, monkeypatch, capsys, args, expected) -> None:
     """
     Test the correct scripts are loaded, in the correct order, for
     different combinations of CLI arguments. See
@@ -276,7 +276,7 @@ def test_script_startup(shell, tmpdir, monkeypatch, capsys, args, expected):
         assert xargs.file is not None
 
 
-def test_rcdir_ignored_with_rc(shell, tmpdir, monkeypatch, capsys, xession):
+def test_rcdir_ignored_with_rc(shell, tmpdir, monkeypatch, capsys, xession) -> None:
     """Test that --rc suppresses loading XONSHRC_DIRs"""
 
     rcdir = tmpdir.join("rc.d")
@@ -294,7 +294,7 @@ def test_rcdir_ignored_with_rc(shell, tmpdir, monkeypatch, capsys, xession):
 
 
 @pytest.mark.skipif(ON_WINDOWS, reason="See https://github.com/xonsh/xonsh/issues/3936")
-def test_rc_with_modified_path(shell, tmpdir, monkeypatch, capsys, xession):
+def test_rc_with_modified_path(shell, tmpdir, monkeypatch, capsys, xession) -> None:
     """Test that an RC file can edit the sys.path variable without losing those values."""
 
     monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
@@ -314,7 +314,7 @@ def test_rc_with_modified_path(shell, tmpdir, monkeypatch, capsys, xession):
     assert tmpdir.strpath in sys.path
 
 
-def test_rc_with_failing_module(shell, tmpdir, monkeypatch, capsys, xession):
+def test_rc_with_failing_module(shell, tmpdir, monkeypatch, capsys, xession) -> None:
     """Test that an RC file which imports a module that throws an exception ."""
 
     monkeypatch.setattr(sys.stdin, "isatty", lambda: True)
@@ -335,17 +335,19 @@ def test_rc_with_failing_module(shell, tmpdir, monkeypatch, capsys, xession):
     assert tmpdir.strpath not in sys.path
 
 
-def test_no_rc_with_script(shell, tmpdir):
+def test_no_rc_with_script(shell, tmpdir) -> None:
     args = xonsh.main.premain(["tests/sample.xsh"])
     assert not (args.mode == XonshMode.interactive)
 
 
-def test_force_interactive_rc_with_script(shell, tmpdir, xession):
+def test_force_interactive_rc_with_script(shell, tmpdir, xession) -> None:
     xonsh.main.premain(["-i", "tests/sample.xsh"])
     assert xession.env.get("XONSH_INTERACTIVE")
 
 
-def test_force_interactive_custom_rc_with_script(shell, tmpdir, monkeypatch, xession):
+def test_force_interactive_custom_rc_with_script(
+    shell, tmpdir, monkeypatch, xession
+) -> None:
     """Calling a custom RC file on a script-call with the interactive flag
     should run interactively
     """
@@ -357,7 +359,7 @@ def test_force_interactive_custom_rc_with_script(shell, tmpdir, monkeypatch, xes
     assert f.strpath in xession.rc_files
 
 
-def test_custom_rc_with_script(shell, tmpdir):
+def test_custom_rc_with_script(shell, tmpdir) -> None:
     """Calling a custom RC file on a script-call without the interactive flag
     should not run interactively
     """
@@ -367,7 +369,7 @@ def test_custom_rc_with_script(shell, tmpdir):
     assert not (args.mode == XonshMode.interactive)
 
 
-def test_premain_no_rc(shell, tmpdir, xession):
+def test_premain_no_rc(shell, tmpdir, xession) -> None:
     xonsh.main.premain(["--no-rc", "-i"])
     assert len(xession.rc_files) == 0
 
@@ -375,24 +377,24 @@ def test_premain_no_rc(shell, tmpdir, xession):
 @pytest.mark.parametrize(
     "arg", ["", "-i", "-vERSION", "-hAALP", "TTTT", "-TT", "--TTT"]
 )
-def test_premain_with_file_argument(arg, shell, xession):
+def test_premain_with_file_argument(arg, shell, xession) -> None:
     xonsh.main.premain(["tests/sample.xsh", arg])
     assert not (xession.env.get("XONSH_INTERACTIVE"))
 
 
-def test_premain_interactive__with_file_argument(shell, xession):
+def test_premain_interactive__with_file_argument(shell, xession) -> None:
     xonsh.main.premain(["-i", "tests/sample.xsh"])
     assert xession.env.get("XONSH_INTERACTIVE")
 
 
 @pytest.mark.parametrize("case", ["----", "--hep", "-TT", "--TTTT"])
-def test_premain_invalid_arguments(shell, case, capsys):
+def test_premain_invalid_arguments(shell, case, capsys) -> None:
     with pytest.raises(SystemExit):
         xonsh.main.premain([case])
     assert "unrecognized argument" in capsys.readouterr()[1]
 
 
-def test_premain_timings_arg(shell):
+def test_premain_timings_arg(shell) -> None:
     xonsh.main.premain(["--timings"])
 
 
@@ -463,7 +465,7 @@ def test_xonsh_failback(
             raise e  # it raised something other than the test exception,
 
 
-def test_xonsh_failback_single(shell, monkeypatch, monkeypatch_stderr):
+def test_xonsh_failback_single(shell, monkeypatch, monkeypatch_stderr) -> None:
     class FakeFailureError(Exception):
         pass
 
@@ -477,7 +479,9 @@ def test_xonsh_failback_single(shell, monkeypatch, monkeypatch_stderr):
         xonsh.main.main()
 
 
-def test_xonsh_failback_script_from_file(shell, monkeypatch, monkeypatch_stderr):
+def test_xonsh_failback_script_from_file(
+    shell, monkeypatch, monkeypatch_stderr
+) -> None:
     checker = []
 
     def mocked_execlp(f, *args):
@@ -494,13 +498,13 @@ def test_xonsh_failback_script_from_file(shell, monkeypatch, monkeypatch_stderr)
     assert len(checker) == 0
 
 
-def test_xonsh_no_file_returncode(shell, monkeypatch, monkeypatch_stderr):
+def test_xonsh_no_file_returncode(shell, monkeypatch, monkeypatch_stderr) -> None:
     monkeypatch.setattr(sys, "argv", ["xonsh", "foobazbarzzznotafileatall.xsh"])
     with pytest.raises(SystemExit):
         xonsh.main.main()
 
 
-def test_auto_loading_xontribs(xession, shell, mocker):
+def test_auto_loading_xontribs(xession, shell, mocker) -> None:
     from importlib.metadata import EntryPoint
 
     group = "xonsh.xontribs"

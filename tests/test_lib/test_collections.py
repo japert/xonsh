@@ -1,7 +1,7 @@
 from xonsh.lib.collections import ChainDB
 
 
-def test_dddi():
+def test_dddi() -> None:
     a = {"a": {"a": {"a": 1}}}
     z = ChainDB(a)
     assert isinstance(z["a"], ChainDB)
@@ -10,7 +10,7 @@ def test_dddi():
     assert z["a"]["a"]["a"] + 1 == 2
 
 
-def test_second_mapping():
+def test_second_mapping() -> None:
     m1 = {"a": {"m": {"x": 0}}}
     m2 = {"a": {"m": {"y": 1}}}
     z = ChainDB(m1)
@@ -20,7 +20,7 @@ def test_second_mapping():
     assert z["a"]["m"]["y"] == 1
 
 
-def test_double_mapping():
+def test_double_mapping() -> None:
     m1 = {"a": {"m": {"y": 0}}}
     m2 = {"a": {"m": {"y": 1}}}
     z = ChainDB(m1)
@@ -31,7 +31,7 @@ def test_double_mapping():
     assert z["a"]["m"]["y"] == 1
 
 
-def test_list_mapping():
+def test_list_mapping() -> None:
     m1 = {"a": {"m": "x"}}
     m2 = {"a": {"m": "y"}}
     z = ChainDB(m1)
@@ -41,7 +41,7 @@ def test_list_mapping():
     assert z["a"]["m"] == "y"
 
 
-def test_mixed_mapping():
+def test_mixed_mapping() -> None:
     m1 = {"a": {"m": {"y": 1}}}
     m2 = {"a": {"m": 1}}
     z = ChainDB(m1)
@@ -51,7 +51,7 @@ def test_mixed_mapping():
     assert z["a"]["m"] == 1
 
 
-def test_exactness():
+def test_exactness() -> None:
     d = {"y": 1}
     m1 = {"a": {"m": d}}
     z = ChainDB(m1)
@@ -61,7 +61,7 @@ def test_exactness():
     assert d is z["a"]["m"].maps[0]
 
 
-def test_exactness_setting():
+def test_exactness_setting() -> None:
     d = {"y": 1}
     m1 = {"a": {"m": d}}
     z = ChainDB(m1)
@@ -73,7 +73,7 @@ def test_exactness_setting():
     assert e is z["a"]["m"].maps[0]
 
 
-def test_exactness_setting_multi():
+def test_exactness_setting_multi() -> None:
     d = "a"
     e = "b"
     m1 = {"a": {"m": d}}
@@ -90,7 +90,7 @@ def test_exactness_setting_multi():
     assert z["a"]["m"] is g
 
 
-def test_exactness_setting_multi2():
+def test_exactness_setting_multi2() -> None:
     d = [1, 2]
     e = [3, 4]
     ee = [5, 6]
@@ -108,7 +108,7 @@ def test_exactness_setting_multi2():
     assert z["a"]["m"] == [1, 2, 3, 4]
 
 
-def test_exactness_setting_multi_novel():
+def test_exactness_setting_multi_novel() -> None:
     d = [1, 2]
     e = [3, 4]
     m1 = {"a": {"m": d}}
@@ -124,7 +124,7 @@ def test_exactness_setting_multi_novel():
     assert g is z["a"]["mm"]
 
 
-def test_dicts_in_lists():
+def test_dicts_in_lists() -> None:
     c = [{"m": 1}, {"n": 2}]
     d = [{"o": 3}, {"p": 4}]
     t = c + d
@@ -141,7 +141,7 @@ def test_dicts_in_lists():
     assert d[1] is z["a"]["b"][3]
 
 
-def test_dicts_in_lists_mutation():
+def test_dicts_in_lists_mutation() -> None:
     c = [{"m": 1}, {"n": 2}]
     d = [{"o": 3}, {"p": 4}]
     m1 = {"a": {"b": c}}
@@ -158,7 +158,7 @@ def test_dicts_in_lists_mutation():
     assert z["a"]["b"] != extend_list
 
 
-def test_sets():
+def test_sets() -> None:
     m1 = {"a": {"b": {1, 2}}}
     m2 = {"a": {"b": {3, 4}}}
     z = ChainDB(m1)
@@ -167,7 +167,7 @@ def test_sets():
     assert z["a"]["b"] == {1, 2, 3, 4}
 
 
-def test_mixed_types():
+def test_mixed_types() -> None:
     m1 = {"a": {"b": {1, 2}}}
     m2 = {"a": {"b": [3, 4]}}
     z = ChainDB(m1)

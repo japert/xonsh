@@ -6,6 +6,6 @@ from xonsh.lazyasd import LazyObject
 #
 
 
-def test_lazyobject_getitem():
+def test_lazyobject_getitem() -> None:
     lo = LazyObject(lambda: {"x": 1}, {}, "lo")
     assert 1 == lo["x"]

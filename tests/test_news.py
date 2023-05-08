@@ -66,7 +66,7 @@ def fname(request):
 
 
 @pytest.mark.news
-def test_news(fname):
+def test_news(fname) -> None:
     base, ext = os.path.splitext(fname.path)
     assert "rst" in ext
     check_news_file(fname)

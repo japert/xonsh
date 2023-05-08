@@ -14,7 +14,7 @@ def uptime(xession, load_xontrib):
     return xession.aliases["uptime"]
 
 
-def test_uptime(uptime):
+def test_uptime(uptime) -> None:
     out = uptime([])
     delta = datetime.timedelta(seconds=float(out))
     # make sure that it returns a positive time lapse

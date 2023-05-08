@@ -60,12 +60,12 @@ cases = [
 
 
 @pytest.mark.parametrize("obj, exp", cases)
-def test_pretty_fn(obj, exp):
+def test_pretty_fn(obj, exp) -> None:
     result = pretty.pretty(obj)
     assert result == exp
 
 
-def test_pretty_printer(capsys):
+def test_pretty_printer(capsys) -> None:
     pretty.pretty_print({})
     captured = capsys.readouterr()
     assert captured.out == "{}\n"

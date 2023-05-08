@@ -51,7 +51,9 @@ def mock_completer(monkeypatch, xsh_with_aliases):
         ),
     ],
 )
-def test_completer_command(args, positionals, options, mock_completer, check_completer):
+def test_completer_command(
+    args, positionals, options, mock_completer, check_completer
+) -> None:
     assert check_completer(args) == positionals
 
     mock_completer.env["ALIAS_COMPLETIONS_OPTIONS_BY_DEFAULT"] = True

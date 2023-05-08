@@ -27,14 +27,14 @@ def hist(tmpdir, xession, monkeypatch):
     yield h
 
 
-def test_hist_init(hist, xession):
+def test_hist_init(hist, xession) -> None:
     """Test initialization of the shell history."""
     with LazyJSON(hist.filename) as lj:
         obs = lj["here"]
     assert "yup" == obs
 
 
-def test_hist_append(hist, xession):
+def test_hist_append(hist, xession) -> None:
     """Verify appending to the history works."""
     xession.env["HISTCONTROL"] = set()
     hf = hist.append({"inp": "still alive", "rtn": 0})
@@ -52,7 +52,7 @@ def test_hist_append(hist, xession):
     assert 0 == hist.rtns[-1]
 
 
-def test_hist_flush(hist, xession):
+def test_hist_flush(hist, xession) -> None:
     """Verify explicit flushing of the history works."""
     hf = hist.flush()
     assert hf is None
@@ -69,7 +69,7 @@ def test_hist_flush(hist, xession):
         assert not cmd.get("out", None)
 
 
-def test_hist_flush_with_store_stdout(hist, xession):
+def test_hist_flush_with_store_stdout(hist, xession) -> None:
     """Verify explicit flushing of the history works."""
     hf = hist.flush()
     assert hf is None
@@ -86,7 +86,7 @@ def test_hist_flush_with_store_stdout(hist, xession):
         assert lj["cmds"][0]["out"].strip() == "yes"
 
 
-def test_hist_flush_with_store_cwd(hist, xession):
+def test_hist_flush_with_store_cwd(hist, xession) -> None:
     hf = hist.flush()
     assert hf is None
 
@@ -108,7 +108,7 @@ def test_hist_flush_with_store_cwd(hist, xession):
         assert "cwd" not in lj["cmds"][1]
 
 
-def test_hist_flush_with_hist_control(hist, xession):
+def test_hist_flush_with_hist_control(hist, xession) -> None:
     """Verify explicit flushing of the history works."""
     hf = hist.flush()
     assert hf is None
@@ -131,7 +131,7 @@ def test_hist_flush_with_hist_control(hist, xession):
         assert [x["rtn"] for x in cmds] == [0, 0]
 
 
-def test_cmd_field(hist, xession):
+def test_cmd_field(hist, xession) -> None:
     # in-memory
     xession.env["HISTCONTROL"] = set()
     hf = hist.append({"inp": "ls foo", "rtn": 1})
@@ -162,7 +162,7 @@ def test_cmd_field(hist, xession):
         ("-4:-2", CMDS[-4:-2], (len(CMDS) - 4, 1)),
     ],
 )
-def test_show_cmd_numerate(inp, commands, offset, hist, xession, capsys):
+def test_show_cmd_numerate(inp, commands, offset, hist, xession, capsys) -> None:
     """Verify that CLI history commands work."""
     base_idx, step = offset
     xession.env["HISTCONTROL"] = set()
@@ -177,7 +177,7 @@ def test_show_cmd_numerate(inp, commands, offset, hist, xession, capsys):
     assert out.rstrip() == exp
 
 
-def test_history_diff(tmpdir, xession, monkeypatch, capsys):
+def test_history_diff(tmpdir, xession, monkeypatch, capsys) -> None:
     files = [tmpdir / f"xonsh-HISTORY-TEST-{idx}.json" for idx in range(2)]
     for file in files:
         hist = JsonHistory(
@@ -199,7 +199,7 @@ def test_history_diff(tmpdir, xession, monkeypatch, capsys):
     assert out.rstrip()
 
 
-def test_histcontrol(hist, xession):
+def test_histcontrol(hist, xession) -> None:
     """Test HISTCONTROL=ignoredups,ignoreerr,ignorespacee"""
 
     xession.env["HISTCONTROL"] = IGNORE_OPTS
@@ -289,7 +289,7 @@ def test_histcontrol(hist, xession):
 
 
 @pytest.mark.parametrize("args", ["-h", "--help", "show -h", "show --help"])
-def test_parse_args_help(args, capsys):
+def test_parse_args_help(args, capsys) -> None:
     with pytest.raises(SystemExit):
         history_main(shlex.split(args))
     assert "show this help message and exit" in capsys.readouterr()[0]
@@ -309,7 +309,9 @@ def test_parse_args_help(args, capsys):
         ("show -n zsh 1:2:3", "zsh", ["1:2:3"], True, False),
     ],
 )
-def test_parser_show(args, session, slice, numerate, reverse, mocker, hist, xession):
+def test_parser_show(
+    args, session, slice, numerate, reverse, mocker, hist, xession
+) -> None:
     # use dict instead of argparse.Namespace for pretty pytest diff
     exp_ns = {
         "session": session,
@@ -357,7 +359,7 @@ def test_parser_show(args, session, slice, numerate, reverse, mocker, hist, xess
         ),
     ],
 )
-def test_history_getitem(index, exp, hist, xession):
+def test_history_getitem(index, exp, hist, xession) -> None:
     xession.env["HISTCONTROL"] = set()
     attrs = ("inp", "out", "rtn", "ts")
 
@@ -527,7 +529,9 @@ assert MAX_RUNTIME < MIN_DIFF / 2
         ),
     ],
 )
-def test__xhj_gc_xx_to_rmfiles(fn, hsize, in_files, exp_size, exp_files, xession):
+def test__xhj_gc_xx_to_rmfiles(
+    fn, hsize, in_files, exp_size, exp_files, xession
+) -> None:
     act_size, act_files = fn(hsize, in_files)
 
     assert act_files == exp_files
@@ -541,7 +545,7 @@ def test__xhj_gc_xx_to_rmfiles(fn, hsize, in_files, exp_size, exp_files, xession
         assert act_size == exp_size
 
 
-def test_hist_clear_cmd(hist, xession, capsys, tmpdir):
+def test_hist_clear_cmd(hist, xession, capsys, tmpdir) -> None:
     """Verify that the CLI history clear command works."""
     xession.env.update({"XONSH_DATA_DIR": str(tmpdir)})
     xession.env["HISTCONTROL"] = set()
@@ -557,7 +561,7 @@ def test_hist_clear_cmd(hist, xession, capsys, tmpdir):
     assert len(xession.history) == 0
 
 
-def test_hist_off_cmd(hist, xession, capsys, tmpdir):
+def test_hist_off_cmd(hist, xession, capsys, tmpdir) -> None:
     """Verify that the CLI history off command works."""
     xession.env.update({"XONSH_DATA_DIR": str(tmpdir)})
     xession.env["HISTCONTROL"] = set()
@@ -578,7 +582,7 @@ def test_hist_off_cmd(hist, xession, capsys, tmpdir):
     assert len(xession.history) == 0
 
 
-def test_hist_on_cmd(hist, xession, capsys, tmpdir):
+def test_hist_on_cmd(hist, xession, capsys, tmpdir) -> None:
     """Verify that the CLI history on command works."""
     xession.env.update({"XONSH_DATA_DIR": str(tmpdir)})
     xession.env["HISTCONTROL"] = set()

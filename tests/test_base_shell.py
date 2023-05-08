@@ -7,7 +7,7 @@ from xonsh.base_shell import BaseShell
 from xonsh.shell import transform_command
 
 
-def test_pwd_tracks_cwd(xession, xonsh_execer, tmpdir_factory, monkeypatch):
+def test_pwd_tracks_cwd(xession, xonsh_execer, tmpdir_factory, monkeypatch) -> None:
     asubdir = str(tmpdir_factory.mktemp("asubdir"))
     cur_wd = os.getcwd()
     xession.env.update(
@@ -27,7 +27,7 @@ def test_pwd_tracks_cwd(xession, xonsh_execer, tmpdir_factory, monkeypatch):
     assert os.path.abspath(cur_wd) == os.path.abspath(xession.env["OLDPWD"])
 
 
-def test_transform(xession):
+def test_transform(xession) -> None:
     @xession.builtins.events.on_transform_command
     def spam2egg(cmd, **_):
         if cmd == "spam":
@@ -48,7 +48,9 @@ def test_transform(xession):
         ("print('yes')", True),
     ],
 )
-def test_default_append_history(cmd, exp_append_history, xonsh_session, monkeypatch):
+def test_default_append_history(
+    cmd, exp_append_history, xonsh_session, monkeypatch
+) -> None:
     """Test that running an empty line or a comment does not append to history"""
     append_history_calls = []
 

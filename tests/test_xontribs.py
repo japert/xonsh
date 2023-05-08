@@ -31,7 +31,7 @@ def tmpmod(tmpdir):
             del sys.modules[m]
 
 
-def test_noall(tmpmod):
+def test_noall(tmpmod) -> None:
     """
     Tests what get's exported from a module without __all__
     """
@@ -49,7 +49,7 @@ _foobar = 3
     assert ctx == {"spam": 1, "eggs": 2}
 
 
-def test_withall(tmpmod):
+def test_withall(tmpmod) -> None:
     """
     Tests what get's exported from a module with __all__
     """
@@ -68,7 +68,7 @@ _foobar = 3
     assert ctx == {"spam": 1, "_foobar": 3}
 
 
-def test_xshxontrib(tmpmod):
+def test_xshxontrib(tmpmod) -> None:
     """
     Test that .xsh xontribs are loadable
     """
@@ -83,7 +83,7 @@ hello = 'world'
     assert ctx == {"hello": "world"}
 
 
-def test_xontrib_load(tmpmod):
+def test_xontrib_load(tmpmod) -> None:
     """
     Test that .xsh xontribs are loadable
     """
@@ -98,7 +98,7 @@ hello = 'world'
     assert "script" in xontribs_loaded()
 
 
-def test_xontrib_unload(tmpmod, xession):
+def test_xontrib_unload(tmpmod, xession) -> None:
     with tmpmod.mkdir("xontrib").join("script.py").open("w") as x:
         x.write(
             """
@@ -116,7 +116,7 @@ def _unload_xontrib_(xsh): del xsh.ctx['hello']
     assert "hello" not in xession.ctx
 
 
-def test_xontrib_reload(tmpmod, xession):
+def test_xontrib_reload(tmpmod, xession) -> None:
     with tmpmod.mkdir("xontrib").join("script.py").open("w") as x:
         x.write(
             """
@@ -143,7 +143,7 @@ def _unload_xontrib_(xsh): del xsh.ctx['hello']
     assert xession.ctx["hello"] == "world1"
 
 
-def test_xontrib_load_dashed(tmpmod):
+def test_xontrib_load_dashed(tmpmod) -> None:
     """
     Test that .xsh xontribs are loadable
     """
@@ -158,7 +158,7 @@ hello = 'world'
     assert "scri-pt" in xontribs_loaded()
 
 
-def test_xontrib_list(xession, capsys):
+def test_xontrib_list(xession, capsys) -> None:
     xontribs_main(["list"])
     out, err = capsys.readouterr()
     assert "coreutils" in out

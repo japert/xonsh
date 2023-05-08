@@ -9,7 +9,6 @@ from xonsh.platform import minimum_required_ptk_version
 from xonsh.ptk_shell.shell import tokenize_ansi
 from xonsh.shell import Shell
 
-
 # verify error if ptk not installed or below min
 
 
@@ -94,7 +93,7 @@ def test_prompt_toolkit_version_checks(
         ),
     ],
 )
-def test_tokenize_ansi(prompt_tokens, ansi_string_parts):
+def test_tokenize_ansi(prompt_tokens, ansi_string_parts) -> None:
     ansi_tokens = tokenize_ansi(prompt_tokens)
     for token, text in zip(ansi_tokens, ansi_string_parts):
         assert token[1] == text
@@ -107,7 +106,7 @@ def test_tokenize_ansi(prompt_tokens, ansi_string_parts):
         ["2 * 3", "6"],
     ],
 )
-def test_ptk_prompt(line, exp, ptk_shell, capsys):
+def test_ptk_prompt(line, exp, ptk_shell, capsys) -> None:
     inp, out, shell = ptk_shell
     inp.send_text(f"{line}\nexit\n")  # note: terminate with '\n'
     shell.cmdloop()
@@ -131,7 +130,9 @@ def test_ptk_prompt(line, exp, ptk_shell, capsys):
         ("print('yes')", True),
     ],
 )
-def test_ptk_default_append_history(cmd, exp_append_history, ptk_shell, monkeypatch):
+def test_ptk_default_append_history(
+    cmd, exp_append_history, ptk_shell, monkeypatch
+) -> None:
     """Test that running an empty line or a comment does not append to history.
     This test is necessary because the prompt-toolkit shell uses a custom _push() method that is different from the base shell's push() method.
     """

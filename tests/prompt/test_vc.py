@@ -71,7 +71,7 @@ def set_xenv(xession, monkeypatch):
     return _wrapper
 
 
-def test_test_repo(repo):
+def test_test_repo(repo) -> None:
     if repo["vc"] == "fossil":
         # Fossil stores the check-out meta-data in a special file within the open check-out.
         # At least one of these below must exist
@@ -89,13 +89,13 @@ def test_test_repo(repo):
         assert test_file.exists()
 
 
-def test_no_repo(tmpdir, set_xenv):
+def test_no_repo(tmpdir, set_xenv) -> None:
     set_xenv(tmpdir)
     assert vc.get_hg_branch() is None
     assert vc.get_git_branch() is None
 
 
-def test_vc_get_branch(repo, set_xenv):
+def test_vc_get_branch(repo, set_xenv) -> None:
     set_xenv(repo["dir"])
     # get corresponding function from vc module
     get_branch = "get_{}_branch".format(repo["vc"])
@@ -120,7 +120,9 @@ current = yellow reverse
         assert not branch.startswith("\u001b[")
 
 
-def test_current_branch_calls_locate_binary_for_empty_cmds_cache(xession, monkeypatch):
+def test_current_branch_calls_locate_binary_for_empty_cmds_cache(
+    xession, monkeypatch
+) -> None:
     cache = xession.commands_cache
     monkeypatch.setattr(cache, "is_empty", Mock(return_value=True))
     monkeypatch.setattr(cache, "locate_binary", Mock(return_value=""))
@@ -141,7 +143,7 @@ def test_current_branch_does_not_call_locate_binary_for_non_empty_cmds_cache(
     assert not cache.locate_binary.called
 
 
-def test_dirty_working_directory(repo, set_xenv):
+def test_dirty_working_directory(repo, set_xenv) -> None:
     get_dwd = "{}_dirty_working_directory".format(repo["vc"])
     set_xenv(repo["dir"])
 

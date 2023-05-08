@@ -1,19 +1,22 @@
 """Testing built_ins.Aliases"""
-
+# All functions and classes have type annotations everywhere
 import inspect
 import os
 import sys
+from typing import Any, Dict, List, Optional
 
 import pytest
 
 from xonsh.aliases import Aliases, ExecAlias
 
 
-def cd(args, stdin=None, **kwargs):
+def cd(
+    args: List[str], stdin: Optional[str] = None, **kwargs: Dict[Any, Any]
+) -> List[str]:
     return args
 
 
-def make_aliases():
+def make_aliases() -> Aliases:
     ales = Aliases(
         {"o": ["omg", "lala"]},
         color_ls=["ls", "--color=true"],
@@ -24,7 +27,7 @@ def make_aliases():
     return ales
 
 
-def test_imports(xession):
+def test_imports(xession) -> None:
     ales = make_aliases()
     expected = {
         "o": ["omg", "lala"],
@@ -37,22 +40,22 @@ def test_imports(xession):
     assert raw == expected
 
 
-def test_eval_normal(xession):
+def test_eval_normal(xession) -> None:
     ales = make_aliases()
     assert ales.get("o") == ["omg", "lala"]
 
 
-def test_eval_self_reference(xession):
+def test_eval_self_reference(xession) -> None:
     ales = make_aliases()
     assert ales.get("ls") == ["ls", "-  -"]
 
 
-def test_eval_recursive(xession):
+def test_eval_recursive(xession) -> None:
     ales = make_aliases()
     assert ales.get("color_ls") == ["ls", "-  -", "--color=true"]
 
 
-def test_eval_recursive_callable_partial(xonsh_execer, xession):
+def test_eval_recursive_callable_partial(xonsh_execer, xession) -> None:
     ales = make_aliases()
     xession.env["HOME"] = os.path.expanduser("~")
     assert ales.get("indirect_cd")(["arg2", "arg3"]) == ["..", "arg2", "arg3"]
@@ -71,7 +74,7 @@ def _return_to_sender_all(args, stdin, stdout, stderr, spec, stack):
     )
 
 
-def test_recursive_callable_partial_all(xession):
+def test_recursive_callable_partial_all(xession) -> None:
     ales = Aliases({"rtn": _return_to_sender_all, "rtn-recurse": ["rtn", "arg1"]})
     alias = ales.get("rtn-recurse")
     assert callable(alias)
@@ -86,7 +89,7 @@ def _return_to_sender_handles(args, stdin, stdout, stderr):
     return args, {"stdin": stdin, "stdout": stdout, "stderr": stderr}
 
 
-def test_recursive_callable_partial_handles(xession):
+def test_recursive_callable_partial_handles(xession) -> None:
     ales = Aliases({"rtn": _return_to_sender_handles, "rtn-recurse": ["rtn", "arg1"]})
     alias = ales.get("rtn-recurse")
     assert callable(alias)
@@ -101,7 +104,7 @@ def _return_to_sender_none():
     return "wakka", {}
 
 
-def test_recursive_callable_partial_none(xession):
+def test_recursive_callable_partial_none(xession) -> None:
     ales = Aliases({"rtn": _return_to_sender_none, "rtn-recurse": ["rtn"]})
     alias = ales.get("rtn-recurse")
     assert callable(alias)
@@ -120,7 +123,7 @@ def test_recursive_callable_partial_none(xession):
         "echo 'hi';  echo 'there'",
     ],
 )
-def test_subprocess_logical_operators(xession, alias):
+def test_subprocess_logical_operators(xession, alias) -> None:
     ales = make_aliases()
     ales["echocat"] = alias
     assert isinstance(ales["echocat"], ExecAlias)
@@ -137,7 +140,7 @@ def test_subprocess_logical_operators(xession, alias):
         "echo 'h|i << x > 3' | grep x",
     ],
 )
-def test_subprocess_io_operators(xession, alias):
+def test_subprocess_io_operators(xession, alias: str) -> None:
     ales = make_aliases()
     ales["echocat"] = alias
     assert isinstance(ales["echocat"], ExecAlias)
@@ -149,7 +152,7 @@ def test_subprocess_io_operators(xession, alias):
         {"echocat": "ls"},
     ],
 )
-def test_dict_merging(xession, alias):
+def test_dict_merging(xession, alias) -> None:
     ales = make_aliases()
     assert (ales | alias)["echocat"] == ["ls"]
     assert (alias | ales)["echocat"] == ["ls"]
@@ -163,7 +166,7 @@ def test_dict_merging(xession, alias):
         {"echocat": "echo Why?"},
     ],
 )
-def test_dict_merging_assignment(xession, alias):
+def test_dict_merging_assignment(xession, alias) -> None:
     ales = make_aliases()
     ales |= alias
 
@@ -177,7 +180,7 @@ def test_dict_merging_assignment(xession, alias):
     assert alias["o"] == ales["o"]
 
 
-def test_exec_alias_args(xession):
+def test_exec_alias_args(xession) -> None:
     stack = inspect.stack()
     try:
         ExecAlias("myargs = $args")(["arg0"], stack=stack)
@@ -193,14 +196,14 @@ def test_exec_alias_args(xession):
     "exp_rtn",
     [0, 1, 2],
 )
-def test_exec_alias_return_value(exp_rtn, xonsh_session, monkeypatch):
+def test_exec_alias_return_value(exp_rtn, xonsh_session, monkeypatch) -> None:
     monkeypatch.setitem(xonsh_session.env, "RAISE_SUBPROC_ERROR", False)
     stack = inspect.stack()
     rtn = ExecAlias(f"{sys.executable} -c 'exit({exp_rtn})'")([], stack=stack)
     assert rtn == exp_rtn
 
 
-def test_register_decorator(xession):
+def test_register_decorator(xession) -> None:
     aliases = Aliases()
 
     @aliases.register

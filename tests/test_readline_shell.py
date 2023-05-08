@@ -19,7 +19,9 @@ from xonsh.readline_shell import _render_completions
         ("a", RichCompletion("b"), 1, "b"),
     ],
 )
-def test_render_completions(prefix, completion, prefix_len, readline_completion):
+def test_render_completions(
+    prefix, completion, prefix_len, readline_completion
+) -> None:
     assert _render_completions({completion}, prefix, prefix_len) == [
         readline_completion
     ]
@@ -32,7 +34,7 @@ def test_render_completions(prefix, completion, prefix_len, readline_completion)
         ["2 * 3", "6"],
     ],
 )
-def test_rl_prompt_cmdloop(line, exp, readline_shell, capsys):
+def test_rl_prompt_cmdloop(line, exp, readline_shell, capsys) -> None:
     shell = readline_shell
     shell.use_rawinput = False
     shell.stdin.write(f"{line}\nexit\n")  # note: terminate with '\n'

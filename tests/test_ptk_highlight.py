@@ -170,7 +170,7 @@ def _convert_cases():
 
 @pytest.mark.parametrize("inp, expected", list(_convert_cases()))
 @skip_if_on_windows
-def test_xonsh_lexer(inp, expected, check_token):
+def test_xonsh_lexer(inp, expected, check_token) -> None:
     check_token(inp, expected)
 
 
@@ -195,7 +195,7 @@ def xonsh_builtins_ls_colors(xession, events_fxt):
 
 
 @skip_if_on_windows
-def test_path(tmpdir, xonsh_builtins_ls_colors, check_token):
+def test_path(tmpdir, xonsh_builtins_ls_colors, check_token) -> None:
     test_dir = str(tmpdir.mkdir("xonsh-test-highlight-path"))
     check_token(f"cd {test_dir}", [(Name.Builtin, "cd"), (Color.BOLD_BLUE, test_dir)])
     check_token(
@@ -209,7 +209,9 @@ def test_path(tmpdir, xonsh_builtins_ls_colors, check_token):
 
 
 @skip_if_on_windows
-def test_color_on_lscolors_change(tmpdir, xonsh_builtins_ls_colors, check_token):
+def test_color_on_lscolors_change(
+    tmpdir, xonsh_builtins_ls_colors, check_token
+) -> None:
     """Verify colorizer returns Token.Text if file type not defined in LS_COLORS"""
 
     lsc = xonsh_builtins_ls_colors.env["LS_COLORS"]

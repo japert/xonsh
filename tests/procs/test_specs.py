@@ -13,7 +13,7 @@ from xonsh.tools import XonshError
 
 
 @skip_if_on_windows
-def test_cmds_to_specs_thread_subproc(xession):
+def test_cmds_to_specs_thread_subproc(xession) -> None:
     env = xession.env
     cmds = [["pwd"]]
 
@@ -48,7 +48,9 @@ def test_cmds_to_specs_thread_subproc(xession):
 
 
 @pytest.mark.parametrize("thread_subprocs", [True, False])
-def test_cmds_to_specs_capture_stdout_not_stderr(thread_subprocs, xonsh_session):
+def test_cmds_to_specs_capture_stdout_not_stderr(
+    thread_subprocs, xonsh_session
+) -> None:
     env = xonsh_session.env
     cmds = (["ls", "/root"],)
 
@@ -143,14 +145,14 @@ def test_capture_always(
         (False, True),
     ],
 )
-def test_run_subproc_background(captured, exp_is_none):
+def test_run_subproc_background(captured, exp_is_none) -> None:
     cmds = (["echo", "hello"], "&")
     return_val = run_subproc(cmds, captured)
     assert (return_val is None) == exp_is_none
 
 
 @pytest.mark.parametrize("thread_subprocs", [False, True])
-def test_callable_alias_cls(thread_subprocs, xession):
+def test_callable_alias_cls(thread_subprocs, xession) -> None:
     class Cls:
         def __call__(self, *args, **kwargs):
             print(args, kwargs)
@@ -169,7 +171,7 @@ def test_callable_alias_cls(thread_subprocs, xession):
 
 
 @pytest.mark.parametrize("captured", ["hiddenobject", False])
-def test_procproxy_not_captured(xession, captured):
+def test_procproxy_not_captured(xession, captured) -> None:
     xession.aliases["tst"] = lambda: 0
     cmds = (["tst", "/root"],)
 
@@ -183,7 +185,7 @@ def test_procproxy_not_captured(xession, captured):
     assert specs[0].stderr is None
 
 
-def test_on_command_not_found_fires(xession):
+def test_on_command_not_found_fires(xession) -> None:
     xession.env.update(
         dict(
             XONSH_INTERACTIVE=True,
@@ -205,7 +207,7 @@ def test_on_command_not_found_fires(xession):
     assert fired
 
 
-def test_on_command_not_found_doesnt_fire_in_non_interactive_mode(xession):
+def test_on_command_not_found_doesnt_fire_in_non_interactive_mode(xession) -> None:
     xession.env.update(
         dict(
             XONSH_INTERACTIVE=False,

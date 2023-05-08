@@ -6,7 +6,7 @@ from xonsh.procs.specs import cmds_to_specs
 from xonsh.tracer import tracermain
 
 
-def test_tracer_help(capsys, xsh_with_aliases):
+def test_tracer_help(capsys, xsh_with_aliases) -> None:
     """verify can invoke it, and usage knows about all the options"""
     spec = cmds_to_specs([("trace", "-h")], captured="stdout")[0]
     with pytest.raises(SystemExit):

@@ -30,14 +30,14 @@ def ctx(xession):
     )
 
 
-def test_colon_indent(ctx):
+def test_colon_indent(ctx) -> None:
     document = Document("for i in range(5):")
     ctx.buffer.set_document(document)
     ctx.cr(ctx.buffer, ctx.cli)
     assert ctx.buffer.document.current_line == ctx.indent
 
 
-def test_dedent(ctx):
+def test_dedent(ctx) -> None:
     document = Document("\n" + ctx.indent + "pass")
     ctx.buffer.set_document(document)
     ctx.cr(ctx.buffer, ctx.cli)
@@ -49,7 +49,7 @@ def test_dedent(ctx):
     assert ctx.buffer.document.current_line == ctx.indent
 
 
-def test_nodedent(ctx):
+def test_nodedent(ctx) -> None:
     """don't dedent if first line of ctx.buffer"""
     mock = MagicMock(return_value=True)
     with patch("xonsh.ptk_shell.key_bindings.can_compile", mock):
@@ -66,14 +66,14 @@ def test_nodedent(ctx):
         assert ctx.accept.mock_calls is not None
 
 
-def test_continuation_line(ctx):
+def test_continuation_line(ctx) -> None:
     document = Document("\nsecond line")
     ctx.buffer.set_document(document)
     ctx.cr(ctx.buffer, ctx.cli)
     assert ctx.buffer.document.current_line == ""
 
 
-def test_trailing_slash(ctx):
+def test_trailing_slash(ctx) -> None:
     mock = MagicMock(return_value=True)
     with patch("xonsh.ptk_shell.key_bindings.can_compile", mock):
         document = Document("this line will \\")
@@ -85,7 +85,7 @@ def test_trailing_slash(ctx):
             assert ctx.accept.mock_calls is not None
 
 
-def test_cant_compile_newline(ctx):
+def test_cant_compile_newline(ctx) -> None:
     mock = MagicMock(return_value=False)
     with patch("xonsh.ptk_shell.key_bindings.can_compile", mock):
         document = Document("for i in (1, 2, ")
@@ -94,7 +94,7 @@ def test_cant_compile_newline(ctx):
         assert ctx.buffer.document.current_line == ""
 
 
-def test_can_compile_and_executes(ctx):
+def test_can_compile_and_executes(ctx) -> None:
     mock = MagicMock(return_value=True)
     with patch("xonsh.ptk_shell.key_bindings.can_compile", mock):
         document = Document("ls")

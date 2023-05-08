@@ -25,7 +25,9 @@ from xonsh.ptk_shell.completer import PromptToolkitCompleter
         ("x", 5, PTKCompletion("x", -5, "x")),
     ],
 )
-def test_rich_completion(completion, lprefix, ptk_completion, monkeypatch, xession):
+def test_rich_completion(
+    completion, lprefix, ptk_completion, monkeypatch, xession
+) -> None:
     xonsh_completer_mock = MagicMock()
     xonsh_completer_mock.complete.return_value = {completion}, lprefix
 
@@ -62,7 +64,9 @@ def test_rich_completion(completion, lprefix, ptk_completion, monkeypatch, xessi
         ({RichCompletion("test", 4, "test()", "func")}, "test", "test_completion"),
     ],
 )
-def test_auto_suggest_completion(completions, document_text, ptk_completion, xession):
+def test_auto_suggest_completion(
+    completions, document_text, ptk_completion, xession
+) -> None:
     lprefix = len(document_text)
 
     xonsh_completer_mock = MagicMock()
@@ -208,7 +212,7 @@ EXPANSION_CASES = (
 
 
 @pytest.mark.parametrize("code, index, expected_args", EXPANSION_CASES)
-def test_alias_expansion(code, index, expected_args, monkeypatch, xession):
+def test_alias_expansion(code, index, expected_args, monkeypatch, xession) -> None:
     xonsh_completer_mock = MagicMock(spec=Completer)
     xonsh_completer_mock.complete.return_value = set(), 0
 

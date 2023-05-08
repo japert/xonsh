@@ -64,7 +64,7 @@ DEFAULT_CMAP = {
         ("bg#000000", {"48;5;0", "48;5;16"}),
     ],
 )
-def test_ansi_color_name_to_escape_code_default(name, exp):
+def test_ansi_color_name_to_escape_code_default(name, exp) -> None:
     cmap = DEFAULT_CMAP.copy()
     obs = ansi_color_name_to_escape_code(name, cmap=cmap)
     assert obs in exp
@@ -74,7 +74,7 @@ RS = ansi_reverse_style(style="default")
 
 
 @pytest.mark.parametrize("key, value", [("", "RESET"), ("31", "RED")])
-def test_ansi_reverse_style(key, value):
+def test_ansi_reverse_style(key, value) -> None:
     assert key in RS
     assert RS[key] == value
 
@@ -123,7 +123,7 @@ def test_ansi_reverse_style(key, value):
         ("1;5;38;5;145;48;5;124", ("BOLD_SLOWBLINK_WHITE", "BACKGROUND_RED")),
     ],
 )
-def test_ansi_color_escape_code_to_name(inp, exp):
+def test_ansi_color_escape_code_to_name(inp, exp) -> None:
     obs = ansi_color_escape_code_to_name(inp, "default", reversed_style=RS)
     assert obs == exp
 
@@ -136,7 +136,7 @@ def test_ansi_color_escape_code_to_name(inp, exp):
         for style in ansi_color_style_names()
     ],
 )
-def test_ansi_color_name_to_escape_code_for_all_styles(color, style):
+def test_ansi_color_name_to_escape_code_for_all_styles(color, style) -> None:
     escape_code = ansi_color_name_to_escape_code(color, style)
     assert len(escape_code) > 0
 
@@ -150,7 +150,7 @@ def test_ansi_color_name_to_escape_code_for_all_styles(color, style):
         ("foobar"),  # invalid, should not fail
     ],
 )
-def test_ansi_style_by_name(style_name):
+def test_ansi_style_by_name(style_name) -> None:
     style = ansi_style_by_name(style_name)
     assert style is not None
 
@@ -179,7 +179,7 @@ def test_ansi_style_by_name(style_name):
         ),
     ],
 )
-def test_register_custom_ansi_style(name, styles, refrules):
+def test_register_custom_ansi_style(name, styles, refrules) -> None:
     register_custom_ansi_style(name, styles)
     style = ansi_style_by_name(name)
     assert style is not None

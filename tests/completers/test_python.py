@@ -50,7 +50,7 @@ BAZ_ARGS = {"sonata=", "artica="}
         ("foo(bar())", 4, FOO_ARGS),
     ],
 )
-def test_complete_python_signatures(line, end, exp):
+def test_complete_python_signatures(line, end, exp) -> None:
     ctx = dict(BASE_CTX)
     obs = python_signature_complete("", line, end, ctx, always_true)
     assert exp == obs
@@ -66,7 +66,7 @@ def test_complete_python_signatures(line, end, exp):
         pytest.param("''.split(ma", "maxsplit=", marks=skip_if_pre_3_8),
     ),
 )
-def test_complete_python(code, exp):
+def test_complete_python(code, exp) -> None:
     res = complete_python(
         CompletionContext(python=PythonContext(code, len(code), ctx={}))
     )
@@ -75,7 +75,7 @@ def test_complete_python(code, exp):
     assert exp in comps
 
 
-def test_complete_python_ctx():
+def test_complete_python_ctx() -> None:
     class A:
         def wow(self):
             pass
@@ -105,7 +105,7 @@ def test_complete_python_ctx():
     ],
 )
 @pytest.mark.flaky(reruns=5, reruns_delay=2)
-def test_complete_import(command, exp, completer_obj):
+def test_complete_import(command, exp, completer_obj) -> None:
     result = complete_import(completer_obj.parse(command))
     if isinstance(result, tuple):
         result, _ = result

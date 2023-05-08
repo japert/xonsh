@@ -22,7 +22,7 @@ def cmd(request):
     return request.param
 
 
-def test_non_dir(cmd, check_completer):
+def test_non_dir(cmd, check_completer) -> None:
     with tempfile.NamedTemporaryFile(dir=".", suffix="_dummySuffix") as tmp:
         assert not check_completer(cmd, prefix=tmp.name[:-2])
 
@@ -33,16 +33,16 @@ def dir_path():
         yield tmp_path
 
 
-def test_dirs_only(cmd, dir_path, check_completer):
+def test_dirs_only(cmd, dir_path, check_completer) -> None:
     completions = check_completer(cmd, dir_path[:-2])
     assert completions == {dir_path + sep}
 
 
-def test_opening_quotes(cmd, dir_path, check_completer):
+def test_opening_quotes(cmd, dir_path, check_completer) -> None:
     assert check_completer(cmd, "r'" + dir_path) == {f"r'{dir_path}{sep}'"}
 
 
-def test_closing_quotes(cmd, dir_path, check_completer):
+def test_closing_quotes(cmd, dir_path, check_completer) -> None:
     prefix = dir_path
     exp = f"'''{dir_path}{sep}'''"
     if ON_WINDOWS:
@@ -61,7 +61,7 @@ def test_closing_quotes(cmd, dir_path, check_completer):
     assert completion.append_closing_quote is False
 
 
-def test_complete_dots(xession, check_completer):
+def test_complete_dots(xession, check_completer) -> None:
     with xession.env.swap(COMPLETE_DOTS="never"):
         dirs = check_completer("cd")
         assert CUR_DIR not in dirs and PARENT_DIR not in dirs

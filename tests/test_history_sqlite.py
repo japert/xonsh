@@ -38,7 +38,7 @@ def _clean_up(h):
 
 
 @skipwin311
-def test_hist_append(hist, xession):
+def test_hist_append(hist, xession) -> None:
     """Verify appending to the history works."""
     xession.env["HISTCONTROL"] = set()
     hf = hist.append({"inp": "still alive", "rtn": 1})
@@ -57,7 +57,7 @@ def test_hist_append(hist, xession):
 
 
 @skipwin311
-def test_hist_attrs(hist, xession):
+def test_hist_attrs(hist, xession) -> None:
     xession.env["HISTCONTROL"] = set()
     hf = hist.append({"inp": "ls foo", "rtn": 1})
     assert hf is None
@@ -97,7 +97,7 @@ CMDS = ["ls", "cat hello kitty", "abc", "def", "touch me", "grep from me"]
         ("-4:-2", CMDS[-4:-2], (len(CMDS) - 4, 1)),
     ],
 )
-def test_show_cmd_numerate(inp, commands, offset, hist, xession, capsys):
+def test_show_cmd_numerate(inp, commands, offset, hist, xession, capsys) -> None:
     """Verify that CLI history commands work."""
     base_idx, step = offset
     xession.history = hist
@@ -116,7 +116,7 @@ def test_show_cmd_numerate(inp, commands, offset, hist, xession, capsys):
 
 
 @skipwin311
-def test_histcontrol(hist, xession):
+def test_histcontrol(hist, xession) -> None:
     """Test HISTCONTROL=ignoredups,ignoreerr"""
 
     ignore_opts = ",".join(["ignoredups", "ignoreerr", "ignorespace"])
@@ -213,7 +213,7 @@ def test_histcontrol(hist, xession):
 
 
 @skipwin311
-def test_histcontrol_erase_dup(hist, xession):
+def test_histcontrol_erase_dup(hist, xession) -> None:
     """Test HISTCONTROL=erasedups"""
 
     xession.env["HISTCONTROL"] = "erasedups"
@@ -248,7 +248,7 @@ def test_histcontrol_erase_dup(hist, xession):
         ),
     ],
 )
-def test_history_getitem(index, exp, hist, xession):
+def test_history_getitem(index, exp, hist, xession) -> None:
     xession.env["HISTCONTROL"] = set()
     xession.env["XONSH_STORE_STDOUT"] = True
     attrs = ("inp", "out", "rtn", "ts")
@@ -267,7 +267,7 @@ def test_history_getitem(index, exp, hist, xession):
 
 
 @skipwin311
-def test_hist_clear_cmd(hist, xession, capsys, tmpdir):
+def test_hist_clear_cmd(hist, xession, capsys, tmpdir) -> None:
     """Verify that the CLI history clear command works."""
     xession.env.update({"XONSH_DATA_DIR": str(tmpdir)})
     xession.history = hist
@@ -287,7 +287,7 @@ def test_hist_clear_cmd(hist, xession, capsys, tmpdir):
 
 
 @skipwin311
-def test_hist_off_cmd(hist, xession, capsys, tmpdir):
+def test_hist_off_cmd(hist, xession, capsys, tmpdir) -> None:
     """Verify that the CLI history off command works."""
     xession.env.update({"XONSH_DATA_DIR": str(tmpdir)})
     xession.history = hist
@@ -312,7 +312,7 @@ def test_hist_off_cmd(hist, xession, capsys, tmpdir):
 
 
 @skipwin311
-def test_hist_on_cmd(hist, xession, capsys, tmpdir):
+def test_hist_on_cmd(hist, xession, capsys, tmpdir) -> None:
     """Verify that the CLI history on command works."""
     xession.env.update({"XONSH_DATA_DIR": str(tmpdir)})
     xession.history = hist
@@ -338,7 +338,7 @@ def test_hist_on_cmd(hist, xession, capsys, tmpdir):
 
 
 @skipwin311
-def test_hist_store_cwd(hist, xession):
+def test_hist_store_cwd(hist, xession) -> None:
     hist.save_cwd = True
     hist.append({"inp": "# saving with cwd", "rtn": 0, "out": "yes", "cwd": "/tmp"})
     hist.save_cwd = False

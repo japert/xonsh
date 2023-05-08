@@ -7,12 +7,12 @@ from xonsh.history.main import construct_history
 
 
 @pytest.mark.parametrize("backend", ["dummy", DummyHistory, DummyHistory()])
-def test_construct_history_str(xession, backend):
+def test_construct_history_str(xession, backend) -> None:
     xession.env["XONSH_HISTORY_BACKEND"] = backend
     assert isinstance(construct_history(), DummyHistory)
 
 
-def test_ignore_regex_invalid(xession, capsys):
+def test_ignore_regex_invalid(xession, capsys) -> None:
     xession.env["XONSH_HISTORY_BACKEND"] = "dummy"
     xession.env["XONSH_HISTORY_IGNORE_REGEX"] = "**"
     history = construct_history()
@@ -24,7 +24,7 @@ def test_ignore_regex_invalid(xession, capsys):
     assert not history.is_ignored({"inp": "history"})
 
 
-def test_is_ignore(xession):
+def test_is_ignore(xession) -> None:
     xession.env["XONSH_HISTORY_BACKEND"] = "dummy"
     xession.env["XONSH_HISTORY_IGNORE_REGEX"] = "(ls|cat)"
     history = construct_history()
@@ -33,7 +33,7 @@ def test_is_ignore(xession):
     assert history.is_ignored({"inp": "ls bar"})
 
 
-def test_is_ignore_no_regex(xession):
+def test_is_ignore_no_regex(xession) -> None:
     xession.env["XONSH_HISTORY_BACKEND"] = "dummy"
     history = construct_history()
     assert not history.is_ignored({"inp": "cat foo.txt"})

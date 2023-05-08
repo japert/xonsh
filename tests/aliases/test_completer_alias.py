@@ -28,7 +28,7 @@ NON_EXCLUSIVE = non_exclusive_completer(lambda: None)
         ),
     ),
 )
-def test_add_completer_start(monkeypatch, initial, exp, xession):
+def test_add_completer_start(monkeypatch, initial, exp, xession) -> None:
     xession.completers.clear()
     xession.completers.update(initial)
     add_one_completer("new", SIMPLE, "start")

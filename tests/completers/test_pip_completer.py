@@ -17,7 +17,7 @@ regex_cases = [
     "line",
     regex_cases,
 )
-def test_pip_re(line):
+def test_pip_re(line) -> None:
     assert complete_xompletions.matcher.search_completer(line)
 
 
@@ -35,7 +35,7 @@ def test_pip_re(line):
         "pip_",
     ],
 )
-def test_pip_list_re1(line):
+def test_pip_list_re1(line) -> None:
     assert complete_xompletions.matcher.search_completer(line) is None
 
 
@@ -54,7 +54,7 @@ def pip_installed():
         ["pip show", "", pip_installed],
     ],
 )
-def test_completions(line, prefix, exp, check_completer, xsh_with_env):
+def test_completions(line, prefix, exp, check_completer, xsh_with_env) -> None:
     # use the actual PATH from os. Otherwise subproc will fail on windows. `unintialized python...`
     comps = check_completer(line, prefix=prefix)
 

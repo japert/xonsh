@@ -13,21 +13,21 @@ def xonsh_execer_autouse(xonsh_execer):
     return xonsh_execer
 
 
-def test_gather_names_name():
+def test_gather_names_name() -> None:
     node = Name(id="y", ctx=Store())
     exp = {"y"}
     obs = ast.gather_names(node)
     assert exp == obs
 
 
-def test_gather_names_tuple():
+def test_gather_names_tuple() -> None:
     node = Tuple(elts=[Name(id="y", ctx=Store()), Name(id="z", ctx=Store())])
     exp = {"y", "z"}
     obs = ast.gather_names(node)
     assert exp == obs
 
 
-def test_gather_load_store_names_tuple():
+def test_gather_load_store_names_tuple() -> None:
     node = Tuple(elts=[Name(id="y", ctx=Store()), Name(id="z", ctx=Store())])
     lexp = set()
     sexp = {"y", "z"}
@@ -44,7 +44,7 @@ def test_gather_load_store_names_tuple():
         "l = 1",  # ls remains undefined.
     ],
 )
-def test_multilline_num(xonsh_execer_parse, line1):
+def test_multilline_num(xonsh_execer_parse, line1) -> None:
     # Subprocess transformation happens on the second line,
     # because not all variables are known.
     code = line1 + "\nls -l\n"
@@ -54,7 +54,7 @@ def test_multilline_num(xonsh_execer_parse, line1):
     assert isinstance(lsnode.value, Call)
 
 
-def test_multilline_no_transform(xonsh_execer_parse):
+def test_multilline_no_transform(xonsh_execer_parse) -> None:
     # No subprocess transformations happen here, since all variables are known.
     code = "ls = 1\nl = 1\nls -l\n"
     tree = xonsh_execer_parse(code)
@@ -108,7 +108,7 @@ for root, dirs, files in os.walk(path):
     """,
     ],
 )
-def test_unmodified(inp, xonsh_execer_parse):
+def test_unmodified(inp, xonsh_execer_parse) -> None:
     # Context sensitive parsing should not modify AST
     exp = pyast.parse(inp)
     obs = xonsh_execer_parse(inp)
@@ -120,7 +120,7 @@ def test_unmodified(inp, xonsh_execer_parse):
     "test_input",
     ["echo; echo && echo\n", "echo; echo && echo a\n", "true && false && true\n"],
 )
-def test_whitespace_subproc(test_input, xonsh_execer_parse):
+def test_whitespace_subproc(test_input, xonsh_execer_parse) -> None:
     assert xonsh_execer_parse(test_input)
 
 
@@ -137,6 +137,6 @@ def test_whitespace_subproc(test_input, xonsh_execer_parse):
         ("x = 42", False),
     ],
 )
-def test_isexpression(xonsh_execer, inp, exp):
+def test_isexpression(xonsh_execer, inp, exp) -> None:
     obs = isexpression(inp)
     assert exp is obs

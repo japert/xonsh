@@ -270,7 +270,7 @@ COMMAND_EXAMPLES += EMPTY_COMMAND_EXAMPLES
 
 
 @pytest.mark.parametrize("commandline, context", COMMAND_EXAMPLES)
-def test_command(commandline, context):
+def test_command(commandline, context) -> None:
     assert_match(commandline, context, is_main_command=True)
 
 
@@ -282,7 +282,7 @@ def test_command(commandline, context):
         if commandline.endswith("'") or commandline.endswith('"')
     ),
 )
-def test_partial_string_arg(commandline, context):
+def test_partial_string_arg(commandline, context) -> None:
     partial_commandline = commandline.rstrip("\"'")
     partial_context = context._replace(closing_quote="")
     assert_match(partial_commandline, partial_context, is_main_command=True)
@@ -432,7 +432,7 @@ CONT = "\\" "\n"
         ),
     ),
 )
-def test_multiline_command(commandline, context):
+def test_multiline_command(commandline, context) -> None:
     assert_match(commandline, context, is_main_command=True)
 
 
@@ -476,7 +476,7 @@ NESTED_SIMPLE_CMD_EXAMPLES = [
         )
     ),
 )
-def test_nested_command(commandline, context, nesting):
+def test_nested_command(commandline, context, nesting) -> None:
     nested_commandline = nesting.replace(X, commandline)
     assert_match(nested_commandline, command_context=context, python_context=None)
 
@@ -492,7 +492,7 @@ NESTING_MALFORMATIONS = (
 
 @pytest.mark.parametrize("nesting, commandline, context", NESTED_SIMPLE_CMD_EXAMPLES)
 @pytest.mark.parametrize("malformation", NESTING_MALFORMATIONS)
-def test_malformed_subcmd(nesting, commandline, context, malformation):
+def test_malformed_subcmd(nesting, commandline, context, malformation) -> None:
     nested_commandline = nesting.replace(X, commandline)
     nested_commandline = malformation(nested_commandline)
     assert_match(nested_commandline, command_context=context, python_context=None)
@@ -513,13 +513,15 @@ MALFORMED_SUBCOMMANDS_NESTINGS = (
 
 @pytest.mark.parametrize("nesting, subcmd_opening", MALFORMED_SUBCOMMANDS_NESTINGS)
 @pytest.mark.parametrize("commandline, context", COMMAND_EXAMPLES[:5])
-def test_multiple_malformed_subcmds(nesting, subcmd_opening, commandline, context):
+def test_multiple_malformed_subcmds(
+    nesting, subcmd_opening, commandline, context
+) -> None:
     nested_commandline = nesting.replace(X, commandline)
     nested_context = context._replace(subcmd_opening=subcmd_opening)
     assert_match(nested_commandline, nested_context, python_context=None)
 
 
-def test_other_subcommand_arg():
+def test_other_subcommand_arg() -> None:
     command = "echo $(pwd) "
     assert_match(
         command,
@@ -528,7 +530,7 @@ def test_other_subcommand_arg():
     )
 
 
-def test_combined_subcommand_arg():
+def test_combined_subcommand_arg() -> None:
     command = f"echo file=$(pwd{X})/x"
 
     # index inside the subproc
@@ -556,7 +558,7 @@ SUBCMD_BORDER_EXAMPLES = (
 
 
 @pytest.mark.parametrize("commandline, context", SUBCMD_BORDER_EXAMPLES)
-def test_cursor_in_subcmd_borders(commandline, context):
+def test_cursor_in_subcmd_borders(commandline, context) -> None:
     assert_match(commandline, context, is_main_command=True)
 
 
@@ -636,7 +638,7 @@ MULTIPLE_COMMAND_EXTENSIVE_EXAMPLES = tuple(
         )
     ),
 )
-def test_multiple_commands(keyword, commands, context):
+def test_multiple_commands(keyword, commands, context) -> None:
     joined_command = keyword.join(commands)
 
     cursor_command = next(command for command in commands if X in command)
@@ -668,7 +670,7 @@ def test_multiple_commands(keyword, commands, context):
         f";;; {X}",
     ),
 )
-def test_multiple_empty_commands(commandline):
+def test_multiple_empty_commands(commandline) -> None:
     assert_match(commandline, CommandContext((), 0), is_main_command=True)
 
 
@@ -686,13 +688,13 @@ def test_multiple_empty_commands(commandline):
         if keyword != "\n"  # the lexer ignores newlines inside subcommands
     ),
 )
-def test_nested_multiple_commands(nesting, keyword, commands, context):
+def test_nested_multiple_commands(nesting, keyword, commands, context) -> None:
     joined_command = keyword.join(commands)
     nested_joined = nesting.replace(X, joined_command)
     assert_match(nested_joined, context, python_context=None)
 
 
-def test_multiple_nested_commands():
+def test_multiple_nested_commands() -> None:
     assert_match(
         f"echo hi; echo $(ls{X})",
         CommandContext((), 0, prefix="ls", subcmd_opening="$("),
@@ -708,7 +710,7 @@ def test_multiple_nested_commands():
         if commandline.endswith("'") or commandline.endswith('"')
     ),
 )
-def test_multiple_partial_string_arg(commandline, context):
+def test_multiple_partial_string_arg(commandline, context) -> None:
     partial_commandline = commandline.rstrip("\"'")
     partial_context = context._replace(closing_quote="")
     assert_match("echo;" + partial_commandline, partial_context)
@@ -724,7 +726,7 @@ def test_multiple_partial_string_arg(commandline, context):
     ),
 )
 @pytest.mark.parametrize("malformation", NESTING_MALFORMATIONS)
-def test_malformed_subcmd_1(malformation, nesting, keyword, commands, context):
+def test_malformed_subcmd_1(malformation, nesting, keyword, commands, context) -> None:
     joined_command = keyword.join(commands)
     nested_joined = nesting.replace(X, joined_command)
     malformed_commandline = malformation(nested_joined)
@@ -795,7 +797,7 @@ MULTIPLE_COMMAND_BORDER_EXAMPLES = tuple(
         )
     ),
 )
-def test_cursor_in_multiple_keyword_borders(commandline, context):
+def test_cursor_in_multiple_keyword_borders(commandline, context) -> None:
     assert_match(commandline, context)
 
 
@@ -833,7 +835,7 @@ PYTHON_NESTING_EXAMPLES = (
         )
     ),
 )
-def test_nested_python(commandline, context, nesting):
+def test_nested_python(commandline, context, nesting) -> None:
     nested_commandline = nesting.replace(X, commandline)
     assert_match(nested_commandline, command_context=None, python_context=context)
 
@@ -851,7 +853,7 @@ def test_nested_python(commandline, context, nesting):
         for commandline, context in SUBCMD_BORDER_EXAMPLES
     ],
 )
-def test_cursor_in_sub_python_borders(commandline, context):
+def test_cursor_in_sub_python_borders(commandline, context) -> None:
     assert_match(commandline, context, is_main_command=True)
 
 
@@ -878,5 +880,5 @@ exit()
     """,
     ),
 )
-def test_multiline_python(code):
+def test_multiline_python(code) -> None:
     assert_match(code, is_main_command=True)

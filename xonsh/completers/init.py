@@ -1,5 +1,6 @@
 """Constructor for xonsh completer objects."""
 import collections
+from typing import Any, Callable, Dict, List
 
 from xonsh.completers._aliases import complete_aliases
 from xonsh.completers.base import complete_base
@@ -15,9 +16,13 @@ from xonsh.completers.imports import complete_import
 from xonsh.completers.man import complete_from_man
 from xonsh.completers.path import complete_path
 from xonsh.completers.python import complete_python
+from xonsh.completers.tools import CompleterResult
+from xonsh.parsers.completion_context import CompletionContext
 
 
-def default_completers(cmd_cache):
+def default_completers(
+    cmd_cache: Dict[str, Any]
+) -> collections.OrderedDict[str, Callable[[CompletionContext], CompleterResult]]:
     """Creates a copy of the default completers."""
     defaults = [
         # non-exclusive completers:

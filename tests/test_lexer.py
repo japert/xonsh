@@ -84,44 +84,44 @@ def check_tokens_subproc(inp, exp, stop=-1):
     return assert_tokens_equal(exp, obs)
 
 
-def test_int_literal():
+def test_int_literal() -> None:
     assert check_token("42", ["NUMBER", "42", 0])
     assert check_token("4_2", ["NUMBER", "4_2", 0])
 
 
-def test_hex_literal():
+def test_hex_literal() -> None:
     assert check_token("0x42", ["NUMBER", "0x42", 0])
     assert check_token("0x4_2", ["NUMBER", "0x4_2", 0])
 
 
-def test_oct_o_literal():
+def test_oct_o_literal() -> None:
     assert check_token("0o42", ["NUMBER", "0o42", 0])
     assert check_token("0o4_2", ["NUMBER", "0o4_2", 0])
 
 
-def test_bin_literal():
+def test_bin_literal() -> None:
     assert check_token("0b101010", ["NUMBER", "0b101010", 0])
     assert check_token("0b10_10_10", ["NUMBER", "0b10_10_10", 0])
 
 
-def test_indent():
+def test_indent() -> None:
     exp = [("INDENT", "  \t  ", 0), ("NUMBER", "42", 5), ("DEDENT", "", 0)]
     assert check_tokens("  \t  42", exp)
 
 
-def test_post_whitespace():
+def test_post_whitespace() -> None:
     inp = "42  \t  "
     exp = [("NUMBER", "42", 0)]
     assert check_tokens(inp, exp)
 
 
-def test_internal_whitespace():
+def test_internal_whitespace() -> None:
     inp = "42  +\t65"
     exp = [("NUMBER", "42", 0), ("PLUS", "+", 4), ("NUMBER", "65", 6)]
     assert check_tokens(inp, exp)
 
 
-def test_indent_internal_whitespace():
+def test_indent_internal_whitespace() -> None:
     inp = " 42  +\t65"
     exp = [
         ("INDENT", " ", 0),
@@ -133,19 +133,19 @@ def test_indent_internal_whitespace():
     assert check_tokens(inp, exp)
 
 
-def test_assignment():
+def test_assignment() -> None:
     inp = "x = 42"
     exp = [("NAME", "x", 0), ("EQUALS", "=", 2), ("NUMBER", "42", 4)]
     assert check_tokens(inp, exp)
 
 
-def test_multiline():
+def test_multiline() -> None:
     inp = "x\ny"
     exp = [("NAME", "x", 0), ("NEWLINE", "\n", 1), ("NAME", "y", 0)]
     assert check_tokens(inp, exp)
 
 
-def test_atdollar_expression():
+def test_atdollar_expression() -> None:
     inp = "@$(which python)"
     exp = [
         ("ATDOLLAR_LPAREN", "@$(", 0),
@@ -157,18 +157,18 @@ def test_atdollar_expression():
     assert check_tokens(inp, exp)
 
 
-def test_and():
+def test_and() -> None:
     # no preceding whitespace or other tokens, so this
     # resolves to NAME, since it doesn't make sense for
     # Python code to start with "and"
     assert check_token("and", ["NAME", "and", 0])
 
 
-def test_ampersand():
+def test_ampersand() -> None:
     assert check_token("&", ["AMPERSAND", "&", 0])
 
 
-def test_not_really_and_pre():
+def test_not_really_and_pre() -> None:
     inp = "![foo-and]"
     exp = [
         ("BANG_LBRACKET", "![", 0),
@@ -180,7 +180,7 @@ def test_not_really_and_pre():
     assert check_tokens(inp, exp)
 
 
-def test_not_really_and_post():
+def test_not_really_and_post() -> None:
     inp = "![and-bar]"
     exp = [
         ("BANG_LBRACKET", "![", 0),
@@ -192,7 +192,7 @@ def test_not_really_and_post():
     assert check_tokens(inp, exp)
 
 
-def test_not_really_and_pre_post():
+def test_not_really_and_pre_post() -> None:
     inp = "![foo-and-bar]"
     exp = [
         ("BANG_LBRACKET", "![", 0),
@@ -206,7 +206,7 @@ def test_not_really_and_pre_post():
     assert check_tokens(inp, exp)
 
 
-def test_not_really_or_pre():
+def test_not_really_or_pre() -> None:
     inp = "![foo-or]"
     exp = [
         ("BANG_LBRACKET", "![", 0),
@@ -218,7 +218,7 @@ def test_not_really_or_pre():
     assert check_tokens(inp, exp)
 
 
-def test_not_really_or_post():
+def test_not_really_or_post() -> None:
     inp = "![or-bar]"
     exp = [
         ("BANG_LBRACKET", "![", 0),
@@ -230,7 +230,7 @@ def test_not_really_or_post():
     assert check_tokens(inp, exp)
 
 
-def test_not_really_or_pre_post():
+def test_not_really_or_pre_post() -> None:
     inp = "![foo-or-bar]"
     exp = [
         ("BANG_LBRACKET", "![", 0),
@@ -244,7 +244,7 @@ def test_not_really_or_pre_post():
     assert check_tokens(inp, exp)
 
 
-def test_subproc_line_cont_space():
+def test_subproc_line_cont_space() -> None:
     inp = (
         "![echo --option1 value1 \\\n"
         "     --option2 value2 \\\n"
@@ -276,7 +276,7 @@ def test_subproc_line_cont_space():
     assert check_tokens(inp, exp)
 
 
-def test_subproc_line_cont_nospace():
+def test_subproc_line_cont_nospace() -> None:
     inp = (
         "![echo --option1 value1\\\n"
         "     --option2 value2\\\n"
@@ -308,67 +308,67 @@ def test_subproc_line_cont_nospace():
     assert check_tokens(inp, exp)
 
 
-def test_atdollar():
+def test_atdollar() -> None:
     assert check_token("@$", ["ATDOLLAR", "@$", 0])
 
 
-def test_doubleamp():
+def test_doubleamp() -> None:
     assert check_token("&&", ["AND", "and", 0])
 
 
-def test_pipe():
+def test_pipe() -> None:
     assert check_token("|", ["PIPE", "|", 0])
 
 
-def test_doublepipe():
+def test_doublepipe() -> None:
     assert check_token("||", ["OR", "or", 0])
 
 
-def test_single_quote_literal():
+def test_single_quote_literal() -> None:
     assert check_token("'yo'", ["STRING", "'yo'", 0])
 
 
-def test_double_quote_literal():
+def test_double_quote_literal() -> None:
     assert check_token('"yo"', ["STRING", '"yo"', 0])
 
 
-def test_triple_single_quote_literal():
+def test_triple_single_quote_literal() -> None:
     assert check_token("'''yo'''", ["STRING", "'''yo'''", 0])
 
 
-def test_triple_double_quote_literal():
+def test_triple_double_quote_literal() -> None:
     assert check_token('"""yo"""', ["STRING", '"""yo"""', 0])
 
 
-def test_single_raw_string_literal():
+def test_single_raw_string_literal() -> None:
     assert check_token("r'yo'", ["STRING", "r'yo'", 0])
 
 
-def test_double_raw_string_literal():
+def test_double_raw_string_literal() -> None:
     assert check_token('r"yo"', ["STRING", 'r"yo"', 0])
 
 
-def test_single_f_string_literal():
+def test_single_f_string_literal() -> None:
     assert check_token("f'{yo}'", ["STRING", "f'{yo}'", 0])
 
 
-def test_double_f_string_literal():
+def test_double_f_string_literal() -> None:
     assert check_token('f"{yo}"', ["STRING", 'f"{yo}"', 0])
 
 
-def test_single_unicode_literal():
+def test_single_unicode_literal() -> None:
     assert check_token("u'yo'", ["STRING", "u'yo'", 0])
 
 
-def test_double_unicode_literal():
+def test_double_unicode_literal() -> None:
     assert check_token('u"yo"', ["STRING", 'u"yo"', 0])
 
 
-def test_single_bytes_literal():
+def test_single_bytes_literal() -> None:
     assert check_token("b'yo'", ["STRING", "b'yo'", 0])
 
 
-def test_path_string_literal():
+def test_path_string_literal() -> None:
     assert check_token("p'/foo'", ["STRING", "p'/foo'", 0])
     assert check_token('p"/foo"', ["STRING", 'p"/foo"', 0])
     assert check_token("pr'/foo'", ["STRING", "pr'/foo'", 0])
@@ -377,7 +377,7 @@ def test_path_string_literal():
     assert check_token('rp"/foo"', ["STRING", 'rp"/foo"', 0])
 
 
-def test_path_fstring_literal():
+def test_path_fstring_literal() -> None:
     assert check_token("pf'/foo'", ["STRING", "pf'/foo'", 0])
     assert check_token('pf"/foo"', ["STRING", 'pf"/foo"', 0])
     assert check_token("fp'/foo'", ["STRING", "fp'/foo'", 0])
@@ -388,7 +388,7 @@ def test_path_fstring_literal():
     assert check_token('Fp"/foo"', ["STRING", 'Fp"/foo"', 0])
 
 
-def test_regex_globs():
+def test_regex_globs() -> None:
     for i in (".*", r"\d*", ".*#{1,2}"):
         for p in ("", "r", "g", "@somethingelse", "p", "pg"):
             c = f"{p}`{i}`"
@@ -410,19 +410,19 @@ def test_regex_globs():
         "1_0e1_0",
     ],
 )
-def test_float_literals(case):
+def test_float_literals(case) -> None:
     assert check_token(case, ["NUMBER", case, 0])
 
 
 @pytest.mark.parametrize(
     "case", ["2>1", "err>out", "o>", "all>", "e>o", "e>", "out>", "2>&1"]
 )
-def test_ioredir(case):
+def test_ioredir(case) -> None:
     assert check_tokens_subproc(case, [("IOREDIRECT", case, 2)], stop=-2)
 
 
 @pytest.mark.parametrize("case", [">", ">>", "<", "e>", "> ", ">>   ", "<  ", "e> "])
-def test_redir_whitespace(case):
+def test_redir_whitespace(case) -> None:
     inp = f"![{case}/path/to/file]"
     obs = lex_input(inp)
     assert obs[2].type == "WS"
@@ -450,7 +450,7 @@ def test_redir_whitespace(case):
         ("echo --go=$HOME", ["echo", "--go=$HOME"]),
     ],
 )
-def test_lexer_split(s, exp):
+def test_lexer_split(s, exp) -> None:
     lexer = Lexer()
     obs = lexer.split(s)
     assert exp == obs
@@ -471,7 +471,7 @@ def test_lexer_split(s, exp):
         '"""',
     ),
 )
-def test_tolerant_lexer(s):
+def test_tolerant_lexer(s) -> None:
     lexer = Lexer(tolerant=True)
     lexer.input(s)
     error_tokens = list(tok for tok in lexer if tok.type == "ERRORTOKEN")

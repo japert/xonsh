@@ -14,7 +14,7 @@ from xonsh.webconfig import main as web_main
 from xonsh.xonfig import xonfig_main
 
 
-def test_xonfg_help(capsys, xession):
+def test_xonfg_help(capsys, xession) -> None:
     """verify can invoke it, and usage knows about all the options"""
     with pytest.raises(SystemExit):
         xonfig_main(["-h"])
@@ -79,15 +79,15 @@ def get_req(request_factory):
 
 
 class TestXonfigWeb:
-    def test_colors_get(self, get_req):
+    def test_colors_get(self, get_req) -> None:
         _, _, resp = get_req("/")
         assert "Colors" in resp
 
-    def test_xontribs_get(self, get_req):
+    def test_xontribs_get(self, get_req) -> None:
         _, _, resp = get_req("/xontribs")
         assert "Xontribs" in resp
 
-    def test_prompts_get(self, get_req):
+    def test_prompts_get(self, get_req) -> None:
         _, _, resp = get_req("/prompts")
         assert "Prompts" in resp
 
@@ -103,7 +103,7 @@ class TestXonfigWeb:
         ),
     ],
 )
-def test_xonfig_info(args, xession):
+def test_xonfig_info(args, xession) -> None:
     """info works, and reports no jupyter if none in environment"""
     capout = xonfig_main(args)
     assert capout.startswith("+---")

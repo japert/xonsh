@@ -11,7 +11,7 @@ def events():
     return EventManager()
 
 
-def test_event_calling(events):
+def test_event_calling(events) -> None:
     called = False
 
     @events.on_test
@@ -24,7 +24,7 @@ def test_event_calling(events):
     assert called == "eggs"
 
 
-def test_event_returns(events):
+def test_event_returns(events) -> None:
     called = 0
 
     @events.on_test
@@ -45,7 +45,7 @@ def test_event_returns(events):
     assert set(vals) == {1, 2}
 
 
-def test_validator(events):
+def test_validator(events) -> None:
     called = None
 
     @events.on_test
@@ -73,14 +73,14 @@ def test_validator(events):
     assert called == 2
 
 
-def test_eventdoc(events):
+def test_eventdoc(events) -> None:
     docstring = "Test event"
     events.doc("on_test", docstring)
 
     assert inspect.getdoc(events.on_test) == docstring
 
 
-def test_transmogrify(events):
+def test_transmogrify(events) -> None:
     docstring = "Test event"
     events.doc("on_test", docstring)
 
@@ -99,7 +99,7 @@ def test_transmogrify(events):
     assert inspect.getdoc(events.on_test) == docstring
 
 
-def test_transmogrify_by_string(events):
+def test_transmogrify_by_string(events) -> None:
     docstring = "Test event"
     events.doc("on_test", docstring)
 
@@ -118,7 +118,7 @@ def test_transmogrify_by_string(events):
     assert inspect.getdoc(events.on_test) == docstring
 
 
-def test_load(events):
+def test_load(events) -> None:
     events.transmogrify("on_test", "LoadEvent")
     called = 0
 
@@ -140,7 +140,7 @@ def test_load(events):
     assert called == 2
 
 
-def test_load_2nd_call(events):
+def test_load_2nd_call(events) -> None:
     events.transmogrify("on_test", "LoadEvent")
     called = 0
 
@@ -158,14 +158,14 @@ def test_load_2nd_call(events):
     assert called == 1
 
 
-def test_typos(xession):
+def test_typos(xession) -> None:
     for name, ev in vars(xession.builtins.events).items():
         if "pytest" in name:
             continue
         assert inspect.getdoc(ev)
 
 
-def test_exists(events):
+def test_exists(events) -> None:
     events.doc("on_test", "Test event")
     assert events.exists("on_test")
     assert not events.exists("on_best")

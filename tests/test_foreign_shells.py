@@ -8,7 +8,7 @@ from xonsh.foreign_shells import foreign_shell_data, parse_aliases, parse_env
 from xonsh.pytest.tools import skip_if_on_unix, skip_if_on_windows
 
 
-def test_parse_env():
+def test_parse_env() -> None:
     exp = {"X": "YES", "Y": "NO"}
     s = (
         "some garbage\n"
@@ -22,7 +22,7 @@ def test_parse_env():
     assert exp == obs
 
 
-def test_parse_env_newline():
+def test_parse_env_newline() -> None:
     exp = {"X": "YES", "Y": "NO", "PROMPT": "why\nme "}
     s = (
         "some garbage\n"
@@ -37,7 +37,7 @@ def test_parse_env_newline():
     assert exp == obs
 
 
-def test_parse_env_equals():
+def test_parse_env_equals() -> None:
     exp = {"X": "YES", "Y": "NO", "LS_COLORS": "*.tar=5"}
     s = (
         "some garbage\n"
@@ -52,7 +52,7 @@ def test_parse_env_equals():
     assert exp == obs
 
 
-def test_parse_aliases():
+def test_parse_aliases() -> None:
     exp = {"x": ["yes", "-1"], "y": ["echo", "no"]}
     s = (
         "some garbage\n"
@@ -67,7 +67,7 @@ def test_parse_aliases():
 
 
 @skip_if_on_windows
-def test_foreign_bash_data():
+def test_foreign_bash_data() -> None:
     expenv = {"EMERALD": "SWORD", "MIGHTY": "WARRIOR"}
     expaliases = {"l": ["ls", "-CF"], "la": ["ls", "-A"], "ll": ["ls", "-a", "-lF"]}
     rcfile = os.path.join(os.path.dirname(__file__), "bashrc.sh")
@@ -84,7 +84,7 @@ def test_foreign_bash_data():
 
 
 @skip_if_on_unix
-def test_foreign_cmd_data():
+def test_foreign_cmd_data() -> None:
     env = (("ENV_TO_BE_REMOVED", "test"),)
     batchfile = os.path.join(os.path.dirname(__file__), "batch.bat")
     source_cmd = f'call "{batchfile}"\necho off'

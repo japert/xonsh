@@ -1,3 +1,5 @@
+from typing import Any, Dict, Iterator, Literal, Optional, Sequence, Tuple
+
 import xonsh.cli_utils as xcli
 from xonsh.built_ins import XSH
 from xonsh.completers.completer import (
@@ -12,19 +14,19 @@ from xonsh.parsers.completion_context import CommandContext
 _add_one_completer = add_one_completer
 
 
-def _remove_completer(args):
+def _remove_completer(args: Sequence[str]) -> Tuple[None, str, Literal[1]] | None:
     """for backward compatibility"""
     return remove_completer(args[0])
 
 
-def complete_func_name_choices(xsh, **_):
+def complete_func_name_choices(xsh: Any, **_: Dict[Any, Any]) -> Iterator[Any]:
     """Return all callable names in the current context"""
     for i, j in xsh.ctx.items():
         if callable(j):
             yield i
 
 
-def complete_completer_pos_choices(xsh, **_):
+def complete_completer_pos_choices(xsh: Any, **_: Dict[Any, Any]) -> Iterator[Any]:
     """Compute possible positions for the new completer"""
     yield from {"start", "end"}
     for k in xsh.completers.keys():
@@ -38,8 +40,8 @@ def _register_completer(
     pos: xcli.Annotated[
         str, xcli.Arg(completer=complete_completer_pos_choices, nargs="?")
     ] = "start",
-    _stack=None,
-):
+    _stack: Any = None,
+) -> Optional[Tuple[Optional[str], str, int]]:
     """Add a new completer to xonsh
 
     Parameters
@@ -93,6 +95,7 @@ def _register_completer(
                 err = "No such function: %s" % func_name
     if err is None:
         _add_one_completer(name, func, pos)
+        return None
     else:
         return None, err + "\n", 1
 

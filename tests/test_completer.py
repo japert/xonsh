@@ -23,7 +23,7 @@ def completers_mock(xession, monkeypatch):
     return completers
 
 
-def test_sanity(completer, completers_mock):
+def test_sanity(completer, completers_mock) -> None:
     # no completions:
     completers_mock["a"] = lambda *a: None
     assert completer.complete("", "", 0, 0) == ((), 0)
@@ -44,7 +44,7 @@ def test_sanity(completer, completers_mock):
     )
 
 
-def test_cursor_after_closing_quote(completer, completers_mock):
+def test_cursor_after_closing_quote(completer, completers_mock) -> None:
     """See ``Completer.complete`` in ``xonsh/completer.py``"""
 
     @contextual_command_completer
@@ -62,7 +62,7 @@ def test_cursor_after_closing_quote(completer, completers_mock):
     ) == (("test1'''", "test2'''"), 7)
 
 
-def test_cursor_after_closing_quote_override(completer, completers_mock):
+def test_cursor_after_closing_quote_override(completer, completers_mock) -> None:
     """Test overriding the default values"""
 
     @contextual_command_completer
@@ -103,7 +103,7 @@ def test_cursor_after_closing_quote_override(completer, completers_mock):
     )
 
 
-def test_append_space(completer, completers_mock):
+def test_append_space(completer, completers_mock) -> None:
     @contextual_command_completer
     def comp(context: CommandContext):
         return {
@@ -143,7 +143,7 @@ def test_append_space(completer, completers_mock):
         )
     ),
 )
-def test_non_exclusive(completer, completers_mock, middle_result, exp):
+def test_non_exclusive(completer, completers_mock, middle_result, exp) -> None:
     completers_mock["a"] = non_exclusive_completer(lambda *a: {"a1", "a2"})
 
     def middle(*a):

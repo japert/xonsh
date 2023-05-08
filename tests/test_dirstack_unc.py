@@ -88,7 +88,7 @@ def shares_setup(tmpdir_factory):
         # unless I wait > 10 sec. see http://stackoverflow.com/questions/38448413/access-denied-in-net-share-delete
 
 
-def test_pushdpopd(xession):
+def test_pushdpopd(xession) -> None:
     """Simple non-UNC push/pop to verify we didn't break nonUNC case."""
     xession.env.update(dict(CDPATH=PARENT, PWD=HERE))
 
@@ -102,7 +102,7 @@ def test_pushdpopd(xession):
     assert owd.casefold() == os.getcwd().casefold(), "popd returned cwd to expected dir"
 
 
-def test_cd_dot(xession):
+def test_cd_dot(xession) -> None:
     xession.env.update(dict(PWD=os.getcwd()))
 
     owd = os.getcwd().casefold()
@@ -111,7 +111,7 @@ def test_cd_dot(xession):
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_simple_push_pop(xession, shares_setup):
+def test_uncpushd_simple_push_pop(xession, shares_setup) -> None:
     if shares_setup is None:
         return
     xession.env.update(dict(CDPATH=PARENT, PWD=HERE))
@@ -128,7 +128,7 @@ def test_uncpushd_simple_push_pop(xession, shares_setup):
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_push_to_same_share(xession, shares_setup):
+def test_uncpushd_push_to_same_share(xession, shares_setup) -> None:
     if shares_setup is None:
         return
     xession.env.update(dict(CDPATH=PARENT, PWD=HERE))
@@ -160,7 +160,7 @@ def test_uncpushd_push_to_same_share(xession, shares_setup):
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_push_other_push_same(xession, shares_setup):
+def test_uncpushd_push_other_push_same(xession, shares_setup) -> None:
     """push to a, then to b. verify drive letter is TEMP_DRIVE[2], skipping already used TEMP_DRIVE[1]
     Then push to a again. Pop (check b unmapped and a still mapped), pop, pop (check a is unmapped)
     """
@@ -210,7 +210,7 @@ def test_uncpushd_push_other_push_same(xession, shares_setup):
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_push_base_push_rempath(xession):
+def test_uncpushd_push_base_push_rempath(xession) -> None:
     """push to subdir under share, verify  mapped path includes subdir"""
     pass
 
@@ -276,7 +276,7 @@ def xonsh_builtins_cd(xession):
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_cd_unc_auto_pushd(xonsh_builtins_cd, with_unc_check_enabled):
+def test_uncpushd_cd_unc_auto_pushd(xonsh_builtins_cd, with_unc_check_enabled) -> None:
     xonsh_builtins_cd.env["AUTO_PUSHD"] = True
     so, se, rc = dirstack.cd([r"\\localhost\uncpushd_test_PARENT"])
     if rc != 0:
@@ -287,7 +287,7 @@ def test_uncpushd_cd_unc_auto_pushd(xonsh_builtins_cd, with_unc_check_enabled):
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_cd_unc_nocheck(xonsh_builtins_cd, with_unc_check_disabled):
+def test_uncpushd_cd_unc_nocheck(xonsh_builtins_cd, with_unc_check_disabled) -> None:
     if with_unc_check_disabled == 0:
         return
     dirstack.cd([r"\\localhost\uncpushd_test_HERE"])
@@ -295,7 +295,9 @@ def test_uncpushd_cd_unc_nocheck(xonsh_builtins_cd, with_unc_check_disabled):
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_cd_unc_no_auto_pushd(xonsh_builtins_cd, with_unc_check_enabled):
+def test_uncpushd_cd_unc_no_auto_pushd(
+    xonsh_builtins_cd, with_unc_check_enabled
+) -> None:
     if with_unc_check_enabled == 0:
         return
     so, se, rc = dirstack.cd([r"\\localhost\uncpushd_test_PARENT"])
@@ -305,7 +307,7 @@ def test_uncpushd_cd_unc_no_auto_pushd(xonsh_builtins_cd, with_unc_check_enabled
 
 
 @pytest.mark.skipif(not ON_WINDOWS, reason="Windows-only UNC functionality")
-def test_uncpushd_unc_check():
+def test_uncpushd_unc_check() -> None:
     # emminently suited to mocking, but I don't know how
     # need to verify unc_check_enabled correct whether values set in HKCU or HKLM
     pass

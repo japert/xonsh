@@ -24,18 +24,18 @@ from xonsh.pytest.tools import skip_if_on_unix
 from xonsh.tools import DefaultNotGiven, always_true
 
 
-def test_env_normal():
+def test_env_normal() -> None:
     env = Env(VAR="wakka")
     assert "wakka" == env["VAR"]
 
 
-def test_env_contains():
+def test_env_contains() -> None:
     env = Env(VAR="wakka")
     assert "VAR" in env
 
 
 @pytest.mark.parametrize("path", [["/home/wakka"], ["wakka"]])
-def test_env_path_dirs_list(path):
+def test_env_path_dirs_list(path) -> None:
     env = Env(MYPATH=path, MYDIRS=path)
     assert path == env["MYPATH"].paths
     assert path == env["MYDIRS"].paths
@@ -45,12 +45,12 @@ def test_env_path_dirs_list(path):
     "path",
     [["/home/wakka" + os.pathsep + "/home/jawaka"], ["wakka" + os.pathsep + "jawaka"]],
 )
-def test_env_path_str(path):
+def test_env_path_str(path) -> None:
     env = Env(MYPATH=path)
     assert path == env["MYPATH"].paths
 
 
-def test_env_detype():
+def test_env_detype() -> None:
     env = Env(MYPATH=["wakka", "jawaka"])
     assert "wakka" + os.pathsep + "jawaka" == env.detype()["MYPATH"]
 
@@ -59,7 +59,7 @@ def test_env_detype():
     "path1, path2",
     [(["/home/wakka", "/home/jawaka"], "/home/woah"), (["wakka", "jawaka"], "woah")],
 )
-def test_env_detype_mutable_access_clear(path1, path2):
+def test_env_detype_mutable_access_clear(path1, path2) -> None:
     env = Env(MYPATH=path1)
     assert path1[0] + os.pathsep + path1[1] == env.detype()["MYPATH"]
     env["MYPATH"][0] = path2
@@ -67,26 +67,26 @@ def test_env_detype_mutable_access_clear(path1, path2):
     assert path2 + os.pathsep + path1[1] == env.detype()["MYPATH"]
 
 
-def test_env_detype_no_dict():
+def test_env_detype_no_dict() -> None:
     env = Env(YO={"hey": 42})
     env.register("YO", validate=always_true, convert=None, detype=None)
     det = env.detype()
     assert "YO" not in det
 
 
-def test_histcontrol_none():
+def test_histcontrol_none() -> None:
     env = Env(HISTCONTROL=None)
     assert isinstance(env["HISTCONTROL"], set)
     assert len(env["HISTCONTROL"]) == 0
 
 
-def test_HISTCONTROL_empty():
+def test_HISTCONTROL_empty() -> None:
     env = Env(HISTCONTROL="")
     assert isinstance(env["HISTCONTROL"], set)
     assert len(env["HISTCONTROL"]) == 0
 
 
-def test_histcontrol_ignoredups():
+def test_histcontrol_ignoredups() -> None:
     env = Env(HISTCONTROL="ignoredups")
     assert isinstance(env["HISTCONTROL"], set)
     assert len(env["HISTCONTROL"]) == 1
@@ -94,14 +94,14 @@ def test_histcontrol_ignoredups():
     assert "ignoreerr" not in env["HISTCONTROL"]
 
 
-def test_histcontrol_ignoreerr_ignoredups():
+def test_histcontrol_ignoreerr_ignoredups() -> None:
     env = Env(HISTCONTROL="ignoreerr,ignoredups,ignoreerr")
     assert len(env["HISTCONTROL"]) == 2
     assert "ignoreerr" in env["HISTCONTROL"]
     assert "ignoredups" in env["HISTCONTROL"]
 
 
-def test_histcontrol_ignoreerr_ignoredups_erase_dups():
+def test_histcontrol_ignoreerr_ignoredups_erase_dups() -> None:
     env = Env(HISTCONTROL="ignoreerr,ignoredups,ignoreerr,erasedups")
     assert len(env["HISTCONTROL"]) == 3
     assert "ignoreerr" in env["HISTCONTROL"]
@@ -109,7 +109,7 @@ def test_histcontrol_ignoreerr_ignoredups_erase_dups():
     assert "erasedups" in env["HISTCONTROL"]
 
 
-def test_swap():
+def test_swap() -> None:
     env = Env(VAR="wakka")
     assert env["VAR"] == "wakka"
 
@@ -138,7 +138,7 @@ def test_swap():
     assert "VAR3" not in env
 
 
-def test_swap_exception_replacement():
+def test_swap_exception_replacement() -> None:
     env = Env(VAR="original value")
     try:
         with env.swap(VAR="inner value"):
@@ -149,7 +149,7 @@ def test_swap_exception_replacement():
     assert env["VAR"] == "original value"
 
 
-def test_thread_local_swap():
+def test_thread_local_swap() -> None:
     env = Env(a="orig")
     iter_count = 10
     num_threads = 4
@@ -189,7 +189,7 @@ def test_thread_local_swap():
 
 
 @skip_if_on_unix
-def test_locate_binary_on_windows(xession):
+def test_locate_binary_on_windows(xession) -> None:
     files = ("file1.exe", "FILE2.BAT", "file3.txt")
     with TemporaryDirectory() as tmpdir:
         tmpdir = os.path.realpath(tmpdir)
@@ -205,7 +205,7 @@ def test_locate_binary_on_windows(xession):
         assert locate_binary("file3") is None
 
 
-def test_event_on_envvar_change(xession, env):
+def test_event_on_envvar_change(xession, env) -> None:
     env["TEST"] = 0
     share = []
     # register
@@ -220,7 +220,7 @@ def test_event_on_envvar_change(xession, env):
     assert share == ["TEST", 0, 1]
 
 
-def test_event_on_envvar_new(xession, env):
+def test_event_on_envvar_new(xession, env) -> None:
     share = []
     # register
 
@@ -234,7 +234,7 @@ def test_event_on_envvar_new(xession, env):
     assert share == ["TEST", 1]
 
 
-def test_event_on_envvar_change_from_none_value(xession, env):
+def test_event_on_envvar_change_from_none_value(xession, env) -> None:
     env["TEST"] = None
     share = []
     # register
@@ -250,7 +250,7 @@ def test_event_on_envvar_change_from_none_value(xession, env):
 
 
 @pytest.mark.parametrize("val", [1, None, True, "ok"])
-def test_event_on_envvar_change_no_fire_when_value_is_same(val, xession, env):
+def test_event_on_envvar_change_no_fire_when_value_is_same(val, xession, env) -> None:
     env["TEST"] = val
     share = []
     # register
@@ -265,7 +265,7 @@ def test_event_on_envvar_change_no_fire_when_value_is_same(val, xession, env):
     assert share == []
 
 
-def test_events_on_envvar_called_in_right_order(xession, env):
+def test_events_on_envvar_called_in_right_order(xession, env) -> None:
     share = []
     # register
 
@@ -288,7 +288,7 @@ def test_events_on_envvar_called_in_right_order(xession, env):
     assert share == ["change"]
 
 
-def test_no_lines_columns():
+def test_no_lines_columns() -> None:
     os.environ["LINES"] = "spam"
     os.environ["COLUMNS"] = "eggs"
     try:
@@ -300,7 +300,7 @@ def test_no_lines_columns():
         del os.environ["COLUMNS"]
 
 
-def test_make_args_env():
+def test_make_args_env() -> None:
     obs = make_args_env(["script", "1", "2", "3"])
     exp = {
         "ARGS": ["script", "1", "2", "3"],
@@ -312,7 +312,7 @@ def test_make_args_env():
     assert exp == obs
 
 
-def test_delitem():
+def test_delitem() -> None:
     env = Env(VAR="a value")
     assert env["VAR"] == "a value"
     del env["VAR"]
@@ -320,7 +320,7 @@ def test_delitem():
         env["VAR"]
 
 
-def test_delitem_default():
+def test_delitem_default() -> None:
     env = Env()
     a_key, a_value = next(
         (k, v.default) for (k, v) in env._vars.items() if isinstance(v.default, str)
@@ -331,7 +331,7 @@ def test_delitem_default():
     assert env[a_key] == a_value
 
 
-def test_lscolors_target(xession):
+def test_lscolors_target(xession) -> None:
     lsc = LsColors.fromstring("ln=target")
     assert lsc["ln"] == ("RESET",)
     assert lsc.is_target("ln")
@@ -348,7 +348,7 @@ def test_lscolors_target(xession):
         ("pi", ("BACKGROUND_BLACK", "YELLOW"), None, "delete existing key"),
     ],
 )
-def test_lscolors_events(key_in, old_in, new_in, test, xession):
+def test_lscolors_events(key_in, old_in, new_in, test, xession) -> None:
     lsc = LsColors.fromstring("fi=0:di=01;34:pi=40;33")
     # corresponding colors: [('RESET',), ('BOLD_CYAN',), ('BOLD_CYAN',), ('BACKGROUND_BLACK', 'YELLOW')]
 
@@ -375,7 +375,7 @@ def test_lscolors_events(key_in, old_in, new_in, test, xession):
         assert event_fired
 
 
-def test_register_custom_var_generic():
+def test_register_custom_var_generic() -> None:
     """Test that a registered envvar without any type is treated
     permissively.
 
@@ -393,7 +393,7 @@ def test_register_custom_var_generic():
     assert env["MY_SPECIAL_VAR"] is True
 
 
-def test_register_custom_var_int():
+def test_register_custom_var_int() -> None:
     env = Env()
     env.register("MY_SPECIAL_VAR", type="int")
 
@@ -404,7 +404,7 @@ def test_register_custom_var_int():
         env["MY_SPECIAL_VAR"] = "wakka"
 
 
-def test_register_custom_var_float():
+def test_register_custom_var_float() -> None:
     env = Env()
     env.register("MY_SPECIAL_VAR", type="float")
 
@@ -428,7 +428,7 @@ def test_register_custom_var_float():
         ("no", False),
     ],
 )
-def test_register_custom_var_bool(val, converted):
+def test_register_custom_var_bool(val, converted) -> None:
     env = Env()
     env.register("MY_SPECIAL_VAR", type="bool")
 
@@ -448,7 +448,7 @@ def test_register_custom_var_bool(val, converted):
         ("no", "no"),
     ],
 )
-def test_register_custom_var_str(val, converted):
+def test_register_custom_var_str(val, converted) -> None:
     env = Env()
     env.register("MY_SPECIAL_VAR", type="str")
 
@@ -456,7 +456,7 @@ def test_register_custom_var_str(val, converted):
     assert env["MY_SPECIAL_VAR"] == converted
 
 
-def test_register_var_path():
+def test_register_var_path() -> None:
     env = Env()
     env.register("MY_PATH_VAR", type="path")
 
@@ -473,7 +473,7 @@ def test_register_var_path():
         env["MY_PATH_VAR"] = 42
 
 
-def test_register_custom_var_env_path():
+def test_register_custom_var_env_path() -> None:
     env = Env()
     env.register("MY_SPECIAL_VAR", type="env_path")
 
@@ -487,7 +487,7 @@ def test_register_custom_var_env_path():
         env["MY_SPECIAL_VAR"] = 32
 
 
-def test_deregister_custom_var():
+def test_deregister_custom_var() -> None:
     env = Env()
 
     env.register("MY_SPECIAL_VAR", type="env_path")
@@ -512,7 +512,7 @@ def test_deregister_custom_var():
     env["MY_SPECIAL_VAR"] = 32
 
 
-def test_register_callable_default():
+def test_register_callable_default() -> None:
     def is_date(x):
         return isinstance(x, datetime.date)
 
@@ -526,14 +526,14 @@ def test_register_callable_default():
     env.register("TODAY", default=today, validate=is_date)
 
 
-def test_env_iterate():
+def test_env_iterate() -> None:
     env = Env(TEST=0)
     env.register(re.compile("re"))
     for key in env:
         assert isinstance(key, str)
 
 
-def test_env_iterate_rawkeys():
+def test_env_iterate_rawkeys() -> None:
     env = Env(TEST=0)
     r = re.compile("re")
     env.register(r)
@@ -546,7 +546,7 @@ def test_env_iterate_rawkeys():
     assert saw_regex
 
 
-def test_env_get_defaults():
+def test_env_get_defaults() -> None:
     """Verify the rather complex rules for env.get("<envvar>",default) value when envvar is not defined."""
 
     env = Env(TEST1=0)
@@ -574,12 +574,12 @@ def test_env_get_defaults():
         (0.5, "is_float"),
     ],
 )
-def test_var_with_default_initer(val, validator):
+def test_var_with_default_initer(val, validator) -> None:
     var = Var.with_default(val)
     assert var.validate.__name__ == validator
 
 
-def test_thread_local_dict():
+def test_thread_local_dict() -> None:
     d = InternalEnvironDict()
     d["a"] = 1
     assert d["a"] == 1
@@ -602,7 +602,7 @@ def test_thread_local_dict():
     assert "a" not in d
 
 
-def test_thread_local_dict_multiple():
+def test_thread_local_dict_multiple() -> None:
     d = InternalEnvironDict()
     num_threads = 5
     thread_values = [None] * num_threads

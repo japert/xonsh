@@ -1,4 +1,4 @@
-def test_current_job(xession):
+def test_current_job(xession) -> None:
     prompts = xession.env["PROMPT_FIELDS"]
     cmds = (["echo", "hello"], "|", ["grep", "h"])
 

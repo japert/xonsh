@@ -7,7 +7,7 @@ from xonsh.history.sqlite import SqliteHistory
 from xonsh.shell import Shell
 
 
-def test_shell_with_json_history(xession, xonsh_execer, tmpdir_factory):
+def test_shell_with_json_history(xession, xonsh_execer, tmpdir_factory) -> None:
     """
     Check that shell successfully load JSON history from file.
     """
@@ -46,7 +46,7 @@ def test_shell_with_json_history(xession, xonsh_execer, tmpdir_factory):
     assert len([i for i in xession.history.all_items()]) == 2
 
 
-def test_shell_with_sqlite_history(xession, xonsh_execer, tmpdir_factory):
+def test_shell_with_sqlite_history(xession, xonsh_execer, tmpdir_factory) -> None:
     """
     Check that shell successfully load SQLite history from file.
     """
@@ -85,7 +85,7 @@ def test_shell_with_sqlite_history(xession, xonsh_execer, tmpdir_factory):
     assert len([i for i in xession.history.all_items()]) == 2
 
 
-def test_shell_with_dummy_history_in_not_interactive(xession, xonsh_execer):
+def test_shell_with_dummy_history_in_not_interactive(xession, xonsh_execer) -> None:
     """
     Check that shell use Dummy history in not interactive mode.
     """

@@ -25,7 +25,7 @@ def func_with_doc(param: str, multi: str, optional=False):
     return param + multi, optional
 
 
-def test_get_doc_param():
+def test_get_doc_param() -> None:
     doc = cli_utils.NumpyDoc(func_with_doc)
     assert doc.description.splitlines() == [
         "func doc",
@@ -47,7 +47,7 @@ def test_get_doc_param():
     assert doc.flags == {"optional": ["-o", "--opt"]}
 
 
-def test_generated_parser():
+def test_generated_parser() -> None:
     from xonsh.completers._aliases import CompleterAlias
 
     alias = CompleterAlias()
@@ -64,7 +64,7 @@ def test_generated_parser():
     assert add_cmd.format_usage() == "usage: completer add [-h] name func [pos]\n"
 
 
-def test_parser_hooking():
+def test_parser_hooking() -> None:
     from xonsh.history.main import HistoryAlias
 
     alias = HistoryAlias()

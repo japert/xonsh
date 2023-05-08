@@ -1,15 +1,16 @@
 """Base completer for xonsh."""
 import collections.abc as cabc
+from typing import Iterator, Set
 
 from xonsh.completers.commands import complete_command
 from xonsh.completers.path import contextual_complete_path
 from xonsh.completers.python import complete_python
-from xonsh.completers.tools import apply_lprefix, contextual_completer
+from xonsh.completers.tools import Completion, apply_lprefix, contextual_completer
 from xonsh.parsers.completion_context import CompletionContext
 
 
 @contextual_completer
-def complete_base(context: CompletionContext):
+def complete_base(context: CompletionContext) -> Iterator[Completion]:
     """If the line is empty, complete based on valid commands, python names, and paths."""
     # If we are completing the first argument, complete based on
     # valid commands and python names.
@@ -21,7 +22,7 @@ def complete_base(context: CompletionContext):
     python_comps = complete_python(context) or set()
     if isinstance(python_comps, cabc.Sequence):
         python_comps, python_comps_len = python_comps  # type: ignore
-        yield from apply_lprefix(python_comps, python_comps_len)
+        yield from apply_lprefix(python_comps, python_comps_len)  # type: ignore
     else:
         yield from python_comps
 

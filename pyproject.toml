@@ -17,8 +17,8 @@ license = { text = "BSD 2-Clause License" }
 requires-python = ">=3.8"
 
 [tool.setuptools.dynamic]
-version = {attr = "xonsh.__version__"}
-readme = {file = ["README.rst"]}
+version = { attr = "xonsh.__version__" }
+readme = { file = ["README.rst"] }
 
 [tool.setuptools]
 packages = [
@@ -49,10 +49,7 @@ xompletions = "xompletions"
 "xonsh.webconfig" = "xonsh/webconfig"
 
 [tool.setuptools.package-data]
-xonsh = [
-    "*.json",
-    "*.githash",
-]
+xonsh = ["*.json", "*.githash"]
 xontrib = ["*.xsh"]
 "xonsh.lib" = ["*.xsh"]
 "xonsh.virtualenv" = ["*.xsh"]
@@ -82,10 +79,7 @@ changelog = "https://github.com/xonsh/xonsh/blob/main/CHANGELOG.rst"
 "Issue tracker" = "https://github.com/xonsh/xonsh/issues"
 
 [project.optional-dependencies]
-ptk = [
-    "prompt-toolkit>=3.0.29",
-    "pyperclip",
-]
+ptk = ["prompt-toolkit>=3.0.29", "pyperclip"]
 pygments = ["pygments>=2.2"]
 mac = ["gnureadline"]
 linux = ["distro"]
@@ -97,10 +91,7 @@ full = [
     "gnureadline; platform_system=='Darwin'",
     "ujson",
 ]
-bestshell = [
-    "prompt_toolkit>=3.0.29",
-    "pygments>=2.2",
-]
+bestshell = ["prompt_toolkit>=3.0.29", "pygments>=2.2"]
 test = [
     "xonsh[bestshell]",
     "pytest>=7",
@@ -121,6 +112,9 @@ dev = [
     "pre-commit",
     "re-ver",
     "tomli",
+    "mypy",
+    "types-ujson",
+    "types-Pygments",
 ]
 doc = [
     "xonsh[bestshell]",
@@ -186,9 +180,7 @@ known-first-party = ["xonsh", "xontrib", "xompletions", "tests"]
 known-third-party = ["ply", "pytest"]
 
 [tool.ruff]
-src = [
-    "xonsh", "xontrib", "xompletions", "tests"
-]
+src = ["xonsh", "xontrib", "xompletions", "tests"]
 exclude = [
     "docs/",
     "*/ply/",
@@ -232,15 +224,15 @@ ignore = [
 ]
 line-length = 180
 select = [
-    "B", # https://beta.ruff.rs/docs/rules/#flake8-bugbear-b
-    "D", # https://beta.ruff.rs/docs/rules/#pydocstyle-d
-    "E", # https://beta.ruff.rs/docs/rules/#pycodestyle-e-w
-    "F", # https://beta.ruff.rs/docs/rules/#pyflakes-f
-    "I", # https://beta.ruff.rs/docs/rules/#isort-i
+    "B",   # https://beta.ruff.rs/docs/rules/#flake8-bugbear-b
+    "D",   # https://beta.ruff.rs/docs/rules/#pydocstyle-d
+    "E",   # https://beta.ruff.rs/docs/rules/#pycodestyle-e-w
+    "F",   # https://beta.ruff.rs/docs/rules/#pyflakes-f
+    "I",   # https://beta.ruff.rs/docs/rules/#isort-i
     "T10", # https://beta.ruff.rs/docs/rules/#flake8-debugger-t10
     "YTT", # https://beta.ruff.rs/docs/rules/#flake8-2020-ytt
-    "W", # https://beta.ruff.rs/docs/rules/#pycodestyle-e-w
-    "UP", # https://beta.ruff.rs/docs/rules/#pyupgrade-up
+    "W",   # https://beta.ruff.rs/docs/rules/#pycodestyle-e-w
+    "UP",  # https://beta.ruff.rs/docs/rules/#pyupgrade-up
 ]
 
 [tool.ruff.pydocstyle]
@@ -254,18 +246,11 @@ convention = "numpy"
 "xonsh/tokenize.py" = [
     "F821",
     "F841",
-    "B904" # Within an `except` clause, raise exceptions with `raise ... from err`
+    "B904", # Within an `except` clause, raise exceptions with `raise ... from err`
 ]
 "xonsh/pyghooks.py" = ["F821"]
-"tests/test_builtins.py" = [
-    "F821",
-    "B011",
-]
-"xonsh/built_ins.py" = [
-    "F821",
-    "E721",
-    "E721",
-]
+"tests/test_builtins.py" = ["F821", "B011"]
+"xonsh/built_ins.py" = ["F821", "E721", "E721"]
 "xonsh/style_tools.py" = ["F821"]
 "xonsh/xoreutils/*.py" = ["E722"]
 "xonsh/completers/python.py" = ["E722"]
@@ -274,9 +259,7 @@ convention = "numpy"
 "xonsh/readline_shell.py" = ["F401"]
 "xonsh/commands_cache.py" = ["F841"]
 "xonsh/ptk/key_bindings.py" = ["F841"]
-"xonsh/tools.py" = [
-    "E731",
-]
+"xonsh/tools.py" = ["E731"]
 "xonsh/xonfig.py" = ["E731"]
 "xontrib/vox.py" = ["F821"]
 "xonsh/inspectors.py" = ["E722"]
@@ -287,3 +270,12 @@ convention = "numpy"
 "tests/test*.py" = [
     "E741", #  E741 Ambiguous variable name
 ]
+
+# add mypy config
+[tool.mypy]
+strict_optional = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+no_implicit_optional = true
+[tool.mypy-]
+warn_no_return = false

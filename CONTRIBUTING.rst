@@ -204,7 +204,7 @@ With the Pytest framework you can use bare `assert` statements on
 anything you're trying to test, note that the name of the test function
 has to be prefixed with `test_`::
 
-    def test_whatever():
+    def test_whatever() -> None:
         assert is_true_or_false
 
 The conftest.py in tests directory defines fixtures for mocking various
@@ -215,7 +215,7 @@ parts of xonsh for more test isolation. For a list of the various fixtures::
 when writing tests it's best to use pytest features i.e. parametrization::
 
     @pytest.mark.parametrize('env', [test_env1, test_env2])
-    def test_one(env, xession):
+    def test_one(env, xession) -> None:
         # update the environment variables instead of setting the attribute
         # which could result in leaks to other tests.
         # each run will have the same set of default env variables set.

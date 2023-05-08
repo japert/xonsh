@@ -11,12 +11,12 @@ def xonsh_execer_autouse(xession, xonsh_execer):
     return xonsh_execer
 
 
-def test_pattern_need_quotes():
+def test_pattern_need_quotes() -> None:
     # just make sure the regex compiles
     xcp.PATTERN_NEED_QUOTES.match("")
 
 
-def test_complete_path(xession, completion_context_parse):
+def test_complete_path(xession, completion_context_parse) -> None:
     xession.env = {
         "CASE_SENSITIVE_COMPLETIONS": False,
         "GLOB_SORTED": True,
@@ -29,7 +29,7 @@ def test_complete_path(xession, completion_context_parse):
 
 
 @patch("xonsh.completers.path._add_cdpaths")
-def test_cd_path_no_cd(mock_add_cdpaths, xession, completion_context_parse):
+def test_cd_path_no_cd(mock_add_cdpaths, xession, completion_context_parse) -> None:
     xession.env = {
         "CASE_SENSITIVE_COMPLETIONS": False,
         "GLOB_SORTED": True,
@@ -63,7 +63,9 @@ def test_complete_path_when_prefix_is_raw_path_string(
         assert expected == out[0].pop()
 
 
-def test_complete_path_ending_with_equal_sign(xession, completion_context_parse):
+def test_complete_path_ending_with_equal_sign(
+    xession, completion_context_parse
+) -> None:
     xession.env = {
         "CASE_SENSITIVE_COMPLETIONS": True,
         "GLOB_SORTED": True,
@@ -82,7 +84,7 @@ def test_complete_path_ending_with_equal_sign(xession, completion_context_parse)
 
 
 @pytest.mark.parametrize("prefix", ("", "r", "p", "pr", "rp"))
-def test_path_from_partial_string(prefix):
+def test_path_from_partial_string(prefix) -> None:
     string = "hello"
     quote = "'"
     out = xcp._path_from_partial_string(f"{prefix}{quote}{string}{quote}")
@@ -94,7 +96,7 @@ def test_path_from_partial_string(prefix):
 
 
 @pytest.mark.parametrize("num_args", (0, 1, 2, 3))
-def test_path_in_python_code(num_args, completion_context_parse):
+def test_path_in_python_code(num_args, completion_context_parse) -> None:
     with tempfile.NamedTemporaryFile(prefix="long_name") as tmp:
         args = []
         if num_args:

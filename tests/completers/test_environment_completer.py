@@ -18,7 +18,7 @@ def parser():
         "ls @('hi ' + $WO",
     ),
 )
-def test_simple(cmd, xession, monkeypatch, parser):
+def test_simple(cmd, xession, monkeypatch, parser) -> None:
     xession.env.update({"WOW": 1})
 
     context = parser.parse(cmd, len(cmd))
@@ -31,7 +31,7 @@ def test_simple(cmd, xession, monkeypatch, parser):
     assert set(comps) == {"$WOW"}
 
 
-def test_rich_completions(xession, monkeypatch, parser):
+def test_rich_completions(xession, monkeypatch, parser) -> None:
     xession.env.update({"WOW": 1})
     xession.env.register("WOW", type=int, doc="Nice Docs!")
 

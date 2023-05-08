@@ -16,7 +16,9 @@ import pytest
         ),
     ],
 )
-def test_xonfig(args, prefix, exp, xsh_with_aliases, monkeypatch, check_completer):
+def test_xonfig(
+    args, prefix, exp, xsh_with_aliases, monkeypatch, check_completer
+) -> None:
     from xonsh import xonfig
 
     monkeypatch.setattr(xonfig, "color_style_names", lambda: ["blue", "brown", "other"])
@@ -43,7 +45,9 @@ def test_xonfig(args, prefix, exp, xsh_with_aliases, monkeypatch, check_complete
         ),
     ],
 )
-def test_xontrib(args, prefix, exp, exp_part, xsh_with_aliases, check_completer):
+def test_xontrib(
+    args, prefix, exp, exp_part, xsh_with_aliases, check_completer
+) -> None:
     result = check_completer(args, prefix=prefix)
     if exp:
         assert result == exp
@@ -51,7 +55,7 @@ def test_xontrib(args, prefix, exp, exp_part, xsh_with_aliases, check_completer)
         assert result.issuperset(exp_part), f"{result} doesn't contain {exp_part} "
 
 
-def test_module_matcher(tmp_path, xession):
+def test_module_matcher(tmp_path, xession) -> None:
     from xonsh.completers import commands
 
     for idx, ext in enumerate(commands.ModuleFinder.extensions):

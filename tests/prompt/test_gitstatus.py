@@ -42,7 +42,7 @@ def fake_proc(fake_process):
         ),
     ],
 )
-def test_gitstatus_dirty(prompts, fake_proc, hidden, exp, xession):
+def test_gitstatus_dirty(prompts, fake_proc, hidden, exp, xession) -> None:
     prompts["gitstatus"].hidden = hidden
     dirty = {
         "git status --porcelain --branch": b"""\
@@ -62,7 +62,7 @@ AM tests/prompt/test_gitstatus.py
     assert format(prompts.pick("gitstatus")) == exp
 
 
-def test_gitstatus_clean(prompts, fake_proc):
+def test_gitstatus_clean(prompts, fake_proc) -> None:
     clean = {
         "git status --porcelain --branch": b"## gitstatus-opt...origin/gitstatus-opt [ahead 7, behind 2]",
         "git rev-parse --git-dir": b".git",
@@ -76,7 +76,7 @@ def test_gitstatus_clean(prompts, fake_proc):
     assert _format_value(prompts.pick("gitstatus"), "{}", None) == exp
 
 
-def test_no_git(prompts, fake_process, tmp_path):
+def test_no_git(prompts, fake_process, tmp_path) -> None:
     os.chdir(tmp_path)
     err = b"fatal: not a git repository (or any of the parent directories): .git"
     fake_process.register_subprocess(

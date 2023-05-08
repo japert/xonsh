@@ -62,7 +62,7 @@ from xonsh.pytest.tools import skip_if_not_on_darwin, skip_if_on_windows
         ],
     ],
 )
-def test_man_completion(xession, check_completer, cmd, exp):
+def test_man_completion(xession, check_completer, cmd, exp) -> None:
     xession.env["MANPATH"] = os.path.dirname(os.path.abspath(__file__))
     completions = check_completer(cmd, complete_fn=complete_from_man, prefix="-")
     assert completions == exp
@@ -96,7 +96,7 @@ def test_man_completion(xession, check_completer, cmd, exp):
         ],
     ],
 )
-def test_bsd_man_page_completions(xession, check_completer, cmd, exp):
+def test_bsd_man_page_completions(xession, check_completer, cmd, exp) -> None:
     proc = subprocess.run([cmd, "--version"], stderr=subprocess.PIPE)
     if (cmd == "ar" and proc.returncode != 1) or (
         cmd == "man" and proc.stderr.strip() not in {b"man, version 1.6g"}

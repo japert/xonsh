@@ -35,7 +35,7 @@ def xonsh_execer_autouse(xonsh_execer):
 
 
 @pytest.mark.parametrize("testfile", reglob("test_.*"))
-def test_reglob_tests(testfile):
+def test_reglob_tests(testfile) -> None:
     assert testfile.startswith("test_")
 
 
@@ -47,7 +47,7 @@ def home_env(xession):
 
 
 @skip_if_on_windows
-def test_repath_backslash(home_env):
+def test_repath_backslash(home_env) -> None:
     exp = os.listdir(HOME_PATH)
     exp = {p for p in exp if re.match(r"\w\w.*", p)}
     exp = {os.path.join(HOME_PATH, p) for p in exp}
@@ -56,7 +56,7 @@ def test_repath_backslash(home_env):
 
 
 @skip_if_on_windows
-def test_repath_HOME_PATH_itself(home_env):
+def test_repath_HOME_PATH_itself(home_env) -> None:
     exp = HOME_PATH
     obs = pathsearch(regexsearch, "~")
     assert 1 == len(obs)
@@ -64,7 +64,7 @@ def test_repath_HOME_PATH_itself(home_env):
 
 
 @skip_if_on_windows
-def test_repath_HOME_PATH_contents(home_env):
+def test_repath_HOME_PATH_contents(home_env) -> None:
     exp = os.listdir(HOME_PATH)
     exp = {os.path.join(HOME_PATH, p) for p in exp}
     obs = set(pathsearch(regexsearch, "~/.*"))
@@ -72,7 +72,7 @@ def test_repath_HOME_PATH_contents(home_env):
 
 
 @skip_if_on_windows
-def test_repath_HOME_PATH_var(home_env):
+def test_repath_HOME_PATH_var(home_env) -> None:
     exp = HOME_PATH
     obs = pathsearch(regexsearch, "$HOME")
     assert 1 == len(obs)
@@ -80,7 +80,7 @@ def test_repath_HOME_PATH_var(home_env):
 
 
 @skip_if_on_windows
-def test_repath_HOME_PATH_var_brace(home_env):
+def test_repath_HOME_PATH_var_brace(home_env) -> None:
     exp = HOME_PATH
     obs = pathsearch(regexsearch, '${"HOME"}')
     assert 1 == len(obs)
@@ -107,7 +107,7 @@ def check_repath(path, pattern):
         ("hello/test*1/model", "hello/.*/model"),
     ],
 )
-def test_repath_containing_asterisk(path, pattern):
+def test_repath_containing_asterisk(path, pattern) -> None:
     check_repath(path, pattern)
 
 
@@ -118,38 +118,38 @@ def test_repath_containing_asterisk(path, pattern):
         ("hello/test+1/model", "hello/.*/model"),
     ],
 )
-def test_repath_containing_plus_sign(path, pattern):
+def test_repath_containing_plus_sign(path, pattern) -> None:
     check_repath(path, pattern)
 
 
-def test_helper_int(home_env):
+def test_helper_int(home_env) -> None:
     helper(int, "int")
 
 
-def test_helper_helper(home_env):
+def test_helper_helper(home_env) -> None:
     helper(helper, "helper")
 
 
-def test_helper_env(home_env):
+def test_helper_env(home_env) -> None:
     helper(Env, "Env")
 
 
-def test_superhelper_int(home_env):
+def test_superhelper_int(home_env) -> None:
     superhelper(int, "int")
 
 
-def test_superhelper_helper(home_env):
+def test_superhelper_helper(home_env) -> None:
     superhelper(helper, "helper")
 
 
-def test_superhelper_env(home_env):
+def test_superhelper_env(home_env) -> None:
     superhelper(Env, "Env")
 
 
 @pytest.mark.parametrize(
     "exp, inp", [(["yo"], "yo"), (["yo"], ["yo"]), (["42"], 42), (["42"], [42])]
 )
-def test_ensure_list_of_strs(exp, inp):
+def test_ensure_list_of_strs(exp, inp) -> None:
     obs = ensure_list_of_strs(inp)
     assert exp == obs
 
@@ -168,7 +168,7 @@ f = lambda x: 20
         ([f], [f]),
     ],
 )
-def test_list_of_strs_or_callables(exp, inp):
+def test_list_of_strs_or_callables(exp, inp) -> None:
     obs = list_of_strs_or_callables(inp)
     assert exp == obs
 
@@ -181,7 +181,7 @@ def test_list_of_strs_or_callables(exp, inp):
         ([["y", "z"], ["a", "b"]], ["ya", "yb", "za", "zb"]),
     ],
 )
-def test_list_of_list_of_strs_outer_product(xession, inp, exp):
+def test_list_of_list_of_strs_outer_product(xession, inp, exp) -> None:
     obs = list_of_list_of_strs_outer_product(inp)
     assert exp == obs
 
@@ -197,7 +197,7 @@ def test_list_of_list_of_strs_outer_product(xession, inp, exp):
         "x=~/one:~/place:~/yo",
     ],
 )
-def test_expand_path(s, home_env):
+def test_expand_path(s, home_env) -> None:
     if os.sep != "/":
         s = s.replace("/", os.sep)
     if os.pathsep != ":":
@@ -206,28 +206,28 @@ def test_expand_path(s, home_env):
 
 
 @pytest.mark.parametrize("kind", [str, "s", "S", "str", "string"])
-def test_convert_macro_arg_str(kind):
+def test_convert_macro_arg_str(kind) -> None:
     raw_arg = "value"
     arg = convert_macro_arg(raw_arg, kind, None, None)
     assert arg is raw_arg
 
 
 @pytest.mark.parametrize("kind", [AST, "a", "Ast"])
-def test_convert_macro_arg_ast(kind):
+def test_convert_macro_arg_ast(kind) -> None:
     raw_arg = "42"
     arg = convert_macro_arg(raw_arg, kind, {}, None)
     assert isinstance(arg, AST)
 
 
 @pytest.mark.parametrize("kind", [types.CodeType, compile, "c", "code", "compile"])
-def test_convert_macro_arg_code(kind):
+def test_convert_macro_arg_code(kind) -> None:
     raw_arg = "42"
     arg = convert_macro_arg(raw_arg, kind, {}, None)
     assert isinstance(arg, types.CodeType)
 
 
 @pytest.mark.parametrize("kind", [eval, "v", "eval"])
-def test_convert_macro_arg_eval(kind):
+def test_convert_macro_arg_eval(kind) -> None:
     # literals
     raw_arg = "42"
     arg = convert_macro_arg(raw_arg, kind, {}, None)
@@ -239,7 +239,7 @@ def test_convert_macro_arg_eval(kind):
 
 
 @pytest.mark.parametrize("kind", [exec, "x", "exec"])
-def test_convert_macro_arg_exec(kind):
+def test_convert_macro_arg_exec(kind) -> None:
     # at global scope
     raw_arg = "def f(x, y):\n    return x + y"
     glbs = {}
@@ -260,7 +260,7 @@ def test_convert_macro_arg_exec(kind):
 
 
 @pytest.mark.parametrize("kind", [type, "t", "type"])
-def test_convert_macro_arg_type(kind):
+def test_convert_macro_arg_type(kind) -> None:
     # literals
     raw_arg = "42"
     arg = convert_macro_arg(raw_arg, kind, {}, None)
@@ -271,7 +271,7 @@ def test_convert_macro_arg_type(kind):
     assert arg is int
 
 
-def test_in_macro_call():
+def test_in_macro_call() -> None:
     def f():
         pass
 
@@ -283,7 +283,7 @@ def test_in_macro_call():
 
 
 @pytest.mark.parametrize("arg", ["x", "42", "x + y"])
-def test_call_macro_str(arg):
+def test_call_macro_str(arg) -> None:
     def f(x: str):
         return x
 
@@ -292,7 +292,7 @@ def test_call_macro_str(arg):
 
 
 @pytest.mark.parametrize("arg", ["x", "42", "x + y"])
-def test_call_macro_ast(arg):
+def test_call_macro_ast(arg) -> None:
     def f(x: AST):
         return x
 
@@ -301,7 +301,7 @@ def test_call_macro_ast(arg):
 
 
 @pytest.mark.parametrize("arg", ["x", "42", "x + y"])
-def test_call_macro_code(arg):
+def test_call_macro_code(arg) -> None:
     def f(x: compile):
         return x
 
@@ -310,7 +310,7 @@ def test_call_macro_code(arg):
 
 
 @pytest.mark.parametrize("arg", ["x", "42", "x + y"])
-def test_call_macro_eval(arg):
+def test_call_macro_eval(arg) -> None:
     def f(x: eval):
         return x
 
@@ -321,7 +321,7 @@ def test_call_macro_eval(arg):
 @pytest.mark.parametrize(
     "arg", ["if y:\n    pass", "if 42:\n    pass", "if x + y:\n    pass"]
 )
-def test_call_macro_exec(arg):
+def test_call_macro_exec(arg) -> None:
     def f(x: exec):
         return x
 
@@ -330,7 +330,7 @@ def test_call_macro_exec(arg):
 
 
 @pytest.mark.parametrize("arg", ["x", "42", "x + y"])
-def test_call_macro_raw_arg(arg):
+def test_call_macro_raw_arg(arg) -> None:
     def f(x: str):
         return x
 
@@ -339,7 +339,7 @@ def test_call_macro_raw_arg(arg):
 
 
 @pytest.mark.parametrize("arg", ["x", "42", "x + y"])
-def test_call_macro_raw_kwarg(arg):
+def test_call_macro_raw_kwarg(arg) -> None:
     def f(x: str):
         return x
 
@@ -348,7 +348,7 @@ def test_call_macro_raw_kwarg(arg):
 
 
 @pytest.mark.parametrize("arg", ["x", "42", "x + y"])
-def test_call_macro_raw_kwargs(arg):
+def test_call_macro_raw_kwargs(arg) -> None:
     def f(x: str):
         return x
 
@@ -356,7 +356,7 @@ def test_call_macro_raw_kwargs(arg):
     assert rtn == 42
 
 
-def test_call_macro_ast_eval_expr():
+def test_call_macro_ast_eval_expr() -> None:
     def f(x: ("ast", "eval")):
         return x
 
@@ -364,7 +364,7 @@ def test_call_macro_ast_eval_expr():
     assert isinstance(rtn, Expression)
 
 
-def test_call_macro_ast_single_expr():
+def test_call_macro_ast_single_expr() -> None:
     def f(x: ("ast", "single")):
         return x
 
@@ -372,7 +372,7 @@ def test_call_macro_ast_single_expr():
     assert isinstance(rtn, Interactive)
 
 
-def test_call_macro_ast_exec_expr():
+def test_call_macro_ast_exec_expr() -> None:
     def f(x: ("ast", "exec")):
         return x
 
@@ -380,7 +380,7 @@ def test_call_macro_ast_exec_expr():
     assert isinstance(rtn, Module)
 
 
-def test_call_macro_ast_eval_statement():
+def test_call_macro_ast_eval_statement() -> None:
     def f(x: ("ast", "eval")):
         return x
 
@@ -395,7 +395,7 @@ def test_call_macro_ast_eval_statement():
         assert False
 
 
-def test_call_macro_ast_single_statement():
+def test_call_macro_ast_single_statement() -> None:
     def f(x: ("ast", "single")):
         return x
 
@@ -403,7 +403,7 @@ def test_call_macro_ast_single_statement():
     assert isinstance(rtn, Interactive)
 
 
-def test_call_macro_ast_exec_statement():
+def test_call_macro_ast_exec_statement() -> None:
     def f(x: ("ast", "exec")):
         return x
 
@@ -411,7 +411,7 @@ def test_call_macro_ast_exec_statement():
     assert isinstance(rtn, Module)
 
 
-def test_enter_macro():
+def test_enter_macro() -> None:
     obj = lambda: None
     rtn = enter_macro(obj, "wakka", True, True)
     assert obj is rtn

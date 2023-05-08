@@ -10,7 +10,7 @@ import pytest
 from xonsh.pytest.tools import ON_WINDOWS
 
 
-def test_run():
+def test_run() -> None:
     if ON_WINDOWS:
         pytest.skip("On Windows")
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -23,7 +23,7 @@ def test_run():
             assert 'tst_dir/hello.txt' in g`tst_dir/*.txt`
 
 
-def test_check_call():
+def test_check_call() -> None:
     if ON_WINDOWS:
         pytest.skip("On Windows")
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -36,7 +36,7 @@ def test_check_call():
             assert 'tst_dir/hello.txt' in g`tst_dir/*.txt`
 
 
-def test_check_call_raises():
+def test_check_call_raises() -> None:
     if ON_WINDOWS:
         pytest.skip("On Windows")
     try:
@@ -47,7 +47,7 @@ def test_check_call_raises():
     assert got_raise
 
 
-def test_check_output():
+def test_check_output() -> None:
     if ON_WINDOWS:
         pytest.skip("On Windows")
     with tempfile.TemporaryDirectory() as tmpdir:

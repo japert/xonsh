@@ -649,7 +649,7 @@ if not ON_WINDOWS:
 @skip_if_no_xonsh
 @pytest.mark.parametrize("case", ALL_PLATFORMS)
 @pytest.mark.flaky(reruns=5, reruns_delay=2)
-def test_script(case):
+def test_script(case) -> None:
     script, exp_out, exp_rtn = case
     out, err, rtn = run_xonsh(script)
     if callable(exp_out):
@@ -677,7 +677,7 @@ f o>e
 
 @skip_if_no_xonsh
 @pytest.mark.parametrize("case", ALL_PLATFORMS_STDERR)
-def test_script_stderr(case):
+def test_script_stderr(case) -> None:
     script, exp_err, exp_rtn = case
     out, err, rtn = run_xonsh(script, stderr=sp.PIPE)
     assert exp_err == err
@@ -699,12 +699,12 @@ def test_script_stderr(case):
         ),
     ],
 )
-def test_single_command_no_windows(cmd, fmt, exp):
+def test_single_command_no_windows(cmd, fmt, exp) -> None:
     check_run_xonsh(cmd, fmt, exp)
 
 
 @skip_if_no_xonsh
-def test_eof_syntax_error():
+def test_eof_syntax_error() -> None:
     """Ensures syntax errors for EOF appear on last line."""
     script = "x = 1\na = (1, 0\n"
     out, err, rtn = run_xonsh(script, stderr=sp.PIPE)
@@ -713,7 +713,7 @@ def test_eof_syntax_error():
 
 
 @skip_if_no_xonsh
-def test_open_quote_syntax_error():
+def test_open_quote_syntax_error() -> None:
     script = (
         "#!/usr/bin/env xonsh\n\n"
         'echo "This is line 3"\n'
@@ -733,7 +733,7 @@ _bad_case = pytest.mark.skipif(
 
 
 @skip_if_no_xonsh
-def test_atdollar_no_output():
+def test_atdollar_no_output() -> None:
     # see issue 1521
     script = """
 def _echo(args):
@@ -746,7 +746,7 @@ aliases['echo'] = _echo
 
 
 @skip_if_no_xonsh
-def test_empty_command():
+def test_empty_command() -> None:
     script = "$['']\n"
     out, err, rtn = run_xonsh(script, stderr=sp.PIPE)
     assert "command is empty" in err
@@ -754,19 +754,19 @@ def test_empty_command():
 
 @skip_if_no_xonsh
 @_bad_case
-def test_printfile():
+def test_printfile() -> None:
     check_run_xonsh("printfile.xsh", None, "printfile.xsh\n")
 
 
 @skip_if_no_xonsh
 @_bad_case
-def test_printname():
+def test_printname() -> None:
     check_run_xonsh("printfile.xsh", None, "printfile.xsh\n")
 
 
 @skip_if_no_xonsh
 @_bad_case
-def test_sourcefile():
+def test_sourcefile() -> None:
     check_run_xonsh("printfile.xsh", None, "printfile.xsh\n")
 
 
@@ -799,14 +799,14 @@ with open('tttt', 'w') as fp:
         ),
     ],
 )
-def test_subshells(cmd, fmt, exp):
+def test_subshells(cmd, fmt, exp) -> None:
     check_run_xonsh(cmd, fmt, exp)
 
 
 @skip_if_no_xonsh
 @skip_if_on_windows
 @pytest.mark.parametrize("cmd, exp", [("pwd", lambda: os.getcwd() + "\n")])
-def test_redirect_out_to_file(cmd, exp, tmpdir):
+def test_redirect_out_to_file(cmd, exp, tmpdir) -> None:
     outfile = tmpdir.mkdir("xonsh_test_dir").join("xonsh_test_file")
     command = f"{cmd} > {outfile}\n"
     out, _, _ = run_xonsh(command)
@@ -821,7 +821,7 @@ def test_redirect_out_to_file(cmd, exp, tmpdir):
 @skip_if_no_sleep
 @skip_if_on_windows
 @pytest.mark.xfail(strict=False)  # TODO: fixme (super flaky on OSX)
-def test_xonsh_no_close_fds():
+def test_xonsh_no_close_fds() -> None:
     # see issue https://github.com/xonsh/xonsh/issues/2984
     makefile = (
         "default: all\n"
@@ -848,14 +848,14 @@ def test_xonsh_no_close_fds():
         ("cat tttt | wc", lambda x: x > "", True),
     ],  # noqa E231 (black removes space)
 )
-def test_pipe_between_subprocs(cmd, fmt, exp):
+def test_pipe_between_subprocs(cmd, fmt, exp) -> None:
     """verify pipe between subprocesses doesn't throw an exception"""
     check_run_xonsh(cmd, fmt, exp)
 
 
 @skip_if_no_xonsh
 @skip_if_on_windows
-def test_negative_exit_codes_fail():
+def test_negative_exit_codes_fail() -> None:
     # see issue 3309
     script = 'python -c "import os; os.abort()" && echo OK\n'
     out, err, rtn = run_xonsh(script)
@@ -873,7 +873,7 @@ def test_negative_exit_codes_fail():
         ("echo foo '&' bar", "foo & bar\n"),
     ],
 )
-def test_ampersand_argument(cmd, exp):
+def test_ampersand_argument(cmd, exp) -> None:
     script = """
 #!/usr/bin/env xonsh
 def _echo(args):
@@ -899,7 +899,7 @@ aliases['echo'] = _echo
         ("sh -c 'exit 1'", 1),
     ],
 )
-def test_single_command_return_code(cmd, exp_rtn):
+def test_single_command_return_code(cmd, exp_rtn) -> None:
     _, _, rtn = run_xonsh(cmd, single_command=True)
     assert rtn == exp_rtn
 
@@ -908,12 +908,12 @@ def test_single_command_return_code(cmd, exp_rtn):
 @skip_if_on_msys
 @skip_if_on_windows
 @skip_if_on_darwin
-def test_argv0():
+def test_argv0() -> None:
     check_run_xonsh("checkargv0.xsh", None, "OK\n")
 
 
 @pytest.mark.parametrize("interactive", [True, False])
-def test_loading_correctly(monkeypatch, interactive):
+def test_loading_correctly(monkeypatch, interactive) -> None:
     # Ensure everything loads correctly in interactive mode (e.g. #4289)
     monkeypatch.setenv("SHELL_TYPE", "prompt_toolkit")
     monkeypatch.setenv("XONSH_LOGIN", "1")
@@ -939,13 +939,13 @@ def test_loading_correctly(monkeypatch, interactive):
         "x = 0; [x for _ in [0]]",
     ],
 )
-def test_exec_function_scope(cmd):
+def test_exec_function_scope(cmd) -> None:
     _, _, rtn = run_xonsh(cmd, single_command=True)
     assert rtn == 0
 
 
 @skip_if_on_unix
-def test_run_currentfolder(monkeypatch):
+def test_run_currentfolder(monkeypatch) -> None:
     """Ensure we can run an executable in the current folder
     when file is not on path
     """
@@ -957,7 +957,7 @@ def test_run_currentfolder(monkeypatch):
 
 
 @skip_if_on_unix
-def test_run_dynamic_on_path():
+def test_run_dynamic_on_path() -> None:
     """Ensure we can run an executable which is added to the path
     after xonsh is loaded
     """
@@ -968,7 +968,7 @@ def test_run_dynamic_on_path():
 
 
 @skip_if_on_unix
-def test_run_fail_not_on_path():
+def test_run_fail_not_on_path() -> None:
     """Test that xonsh fails to run an executable when not on path
     or in current folder
     """

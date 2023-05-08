@@ -15,14 +15,14 @@ from xonsh.commands_cache import (
 from xonsh.pytest.tools import skip_if_on_windows
 
 
-def test_commands_cache_lazy(xession):
+def test_commands_cache_lazy(xession) -> None:
     cc = xession.commands_cache
     assert not cc.lazyin("xonsh")
     assert 0 == len(list(cc.lazyiter()))
     assert 0 == cc.lazylen()
 
 
-def test_predict_threadable_unknown_command(xession):
+def test_predict_threadable_unknown_command(xession) -> None:
     result = xession.commands_cache.predict_threadable(["command_should_not_found"])
     assert isinstance(result, bool)
 
@@ -35,7 +35,7 @@ class TestCommandsCacheSaveIntermediate:
         xession.env["COMMANDS_CACHE_SAVE_INTERMEDIATE"] = True
         return mock_executables_in(["bin1", "bin2"])
 
-    def test_caching_to_file(self, exin_mock, xession, tmp_path):
+    def test_caching_to_file(self, exin_mock, xession, tmp_path) -> None:
         assert [b.lower() for b in xession.commands_cache.all_commands.keys()] == [
             "bin1",
             "bin2",
@@ -45,7 +45,7 @@ class TestCommandsCacheSaveIntermediate:
         assert len(list(files)) == 1
         exin_mock.assert_called_once()
 
-    def test_loading_cache(self, exin_mock, tmp_path, xession):
+    def test_loading_cache(self, exin_mock, tmp_path, xession) -> None:
         cc = xession.commands_cache
         file = tmp_path / CommandsCache.CACHE_FILE
         file.touch()
@@ -73,14 +73,14 @@ TRUE_SHELL_ARGS = [
 
 
 @pytest.mark.parametrize("args", TRUE_SHELL_ARGS)
-def test_predict_shell_parser(args):
+def test_predict_shell_parser(args) -> None:
     ns, unknown = SHELL_PREDICTOR_PARSER.parse_known_args(args)
     if ns.filename is not None:
         assert not ns.filename.startswith("-")
 
 
 @pytest.mark.parametrize("args", TRUE_SHELL_ARGS)
-def test_predict_shell_true(args):
+def test_predict_shell_true(args) -> None:
     assert predict_shell(args, None)
 
 
@@ -88,7 +88,7 @@ FALSE_SHELL_ARGS = [[], ["-c"], ["-i"], ["-i", "-l"]]
 
 
 @pytest.mark.parametrize("args", FALSE_SHELL_ARGS)
-def test_predict_shell_false(args):
+def test_predict_shell_false(args) -> None:
     assert not predict_shell(args, None)
 
 
@@ -134,7 +134,7 @@ PATTERN_BIN_USING_TTY_OR_NOT = [
 
 @pytest.mark.parametrize("args", PATTERN_BIN_USING_TTY_OR_NOT)
 @skip_if_on_windows
-def test_commands_cache_predictor_default(args, xession, tmp_path):
+def test_commands_cache_predictor_default(args, xession, tmp_path) -> None:
     use_tty, patterns = args
     file = tmp_path / "testfile"
     where = list(patterns.keys())
@@ -158,12 +158,12 @@ def test_commands_cache_predictor_default(args, xession, tmp_path):
 
 class Test_is_only_functional_alias:
     @skip_if_on_windows
-    def test_cd(self, xession):
+    def test_cd(self, xession) -> None:
         xession.aliases["cd"] = lambda args: os.chdir(args[0])
         xession.env["PATH"] = []
         assert xession.commands_cache.is_only_functional_alias("cd")
 
-    def test_non_exist(self, xession):
+    def test_non_exist(self, xession) -> None:
         assert (
             xession.commands_cache.is_only_functional_alias(
                 "<not really a command name>"
@@ -171,12 +171,12 @@ class Test_is_only_functional_alias:
             is False
         )
 
-    def test_bash_and_is_alias_is_only_functional_alias(self, xession):
+    def test_bash_and_is_alias_is_only_functional_alias(self, xession) -> None:
         xession.aliases["git"] = lambda args: os.chdir(args[0])
         assert xession.commands_cache.is_only_functional_alias("git") is False
 
 
-def test_update_cache(xession, tmp_path):
+def test_update_cache(xession, tmp_path) -> None:
     xession.env["ENABLE_COMMANDS_CACHE"] = False
     basename = "PITA.EXE"
     subdir1 = tmp_path / "subdir1"

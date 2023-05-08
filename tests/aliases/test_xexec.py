@@ -18,14 +18,14 @@ def mockexecvpe(monkeypatch):
     monkeypatch.setattr(os, "execvpe", mocked_execvpe)
 
 
-def test_missing_command(mockexecvpe):
+def test_missing_command(mockexecvpe) -> None:
     assert xexec([]) == (None, "xonsh: exec: no command specified\n", 1)
     assert xexec(["-a", "foo"]) == (None, "xonsh: exec: no command specified\n", 1)
     assert xexec(["-c"]) == (None, "xonsh: exec: no command specified\n", 1)
     assert xexec(["-l"]) == (None, "xonsh: exec: no command specified\n", 1)
 
 
-def test_command_not_found(monkeypatch):
+def test_command_not_found(monkeypatch) -> None:
     dummy_error_msg = (
         "This is dummy error message, file not found or something like that"
     )
@@ -44,7 +44,7 @@ def test_command_not_found(monkeypatch):
 
 
 @pytest.mark.parametrize("cmd", ["-h", "--help"])
-def test_help(cmd, mockexecvpe, capsys, mocker):
+def test_help(cmd, mockexecvpe, capsys, mocker) -> None:
     usage = "usage: xexec [-h] [-l] [-c] [-a NAME] ..."
     exit_mock = mocker.patch("argparse._sys.exit")
     xexec([cmd])
@@ -54,7 +54,7 @@ def test_help(cmd, mockexecvpe, capsys, mocker):
     assert usage in cap.out
 
 
-def test_a_switch(monkeypatch):
+def test_a_switch(monkeypatch) -> None:
     called = {}
 
     def mocked_execvpe(command, args, env):
@@ -70,7 +70,7 @@ def test_a_switch(monkeypatch):
     assert len(called["args"]) == len([command] + command_args)
 
 
-def test_l_switch(monkeypatch):
+def test_l_switch(monkeypatch) -> None:
     called = {}
 
     def mocked_execvpe(command, args, env):
@@ -83,7 +83,7 @@ def test_l_switch(monkeypatch):
     assert called["args"][0].startswith("-")
 
 
-def test_c_switch(monkeypatch):
+def test_c_switch(monkeypatch) -> None:
     called = {}
 
     def mocked_execvpe(command, args, env):

@@ -11,7 +11,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 PARENT = os.path.dirname(HERE)
 
 
-def test_simple(xession):
+def test_simple(xession) -> None:
     xession.env.update(dict(CDPATH=PARENT, PWD=PARENT))
     with chdir(PARENT):
         assert os.getcwd() != HERE
@@ -19,7 +19,7 @@ def test_simple(xession):
         assert os.getcwd() == HERE
 
 
-def test_cdpath_simple(xession):
+def test_cdpath_simple(xession) -> None:
     xession.env.update(dict(CDPATH=PARENT, PWD=HERE))
     with chdir(os.path.normpath("/")):
         assert os.getcwd() != HERE
@@ -27,7 +27,7 @@ def test_cdpath_simple(xession):
         assert os.getcwd() == HERE
 
 
-def test_cdpath_collision(xession):
+def test_cdpath_collision(xession) -> None:
     xession.env.update(dict(CDPATH=PARENT, PWD=HERE))
     sub_tests = os.path.join(HERE, "tests")
     if not os.path.exists(sub_tests):
@@ -38,7 +38,7 @@ def test_cdpath_collision(xession):
         assert os.getcwd() == os.path.join(HERE, "tests")
 
 
-def test_cdpath_expansion(xession):
+def test_cdpath_expansion(xession) -> None:
     xession.env.update(dict(HERE=HERE, CDPATH=("~", "$HERE")))
     test_dirs = (
         os.path.join(HERE, "xonsh-test-cdpath-here"),
@@ -57,7 +57,7 @@ def test_cdpath_expansion(xession):
                 os.rmdir(d)
 
 
-def test_cdpath_events(xession, tmpdir):
+def test_cdpath_events(xession, tmpdir) -> None:
     xession.env.update(dict(CDPATH=PARENT, PWD=os.getcwd()))
     target = str(tmpdir)
 
@@ -80,7 +80,7 @@ def test_cdpath_events(xession, tmpdir):
         os.chdir(old_dir)
 
 
-def test_cd_autopush(xession, tmpdir):
+def test_cd_autopush(xession, tmpdir) -> None:
     xession.env.update(dict(CDPATH=PARENT, PWD=os.getcwd(), AUTO_PUSHD=True))
     target = str(tmpdir)
 

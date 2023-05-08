@@ -8,7 +8,7 @@ import pytest
 from xonsh.pytest.tools import ON_WINDOWS
 
 
-def test_indir():
+def test_indir() -> None:
     if ON_WINDOWS:
         pytest.skip("On Windows")
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -23,7 +23,7 @@ def test_indir():
             assert $(pwd).strip() != tmpdir
 
 
-def test_rmtree():
+def test_rmtree() -> None:
     if ON_WINDOWS:
         pytest.skip("On Windows")
     with tempfile.TemporaryDirectory() as tmpdir:
